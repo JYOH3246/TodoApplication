@@ -1,11 +1,10 @@
 package com.teamsparta.todoapplication.domain.todo.dto
 
-import java.util.Date
+import java.util.*
 
-data class TodoResponse(
-        val id: Long,
+data class TodoResponse (
+        val id : Long,
         val title :String,
-        val description :String,
-        val date :Date,
-        val name :String
+        val content : String,
+        val date : Date
 )
