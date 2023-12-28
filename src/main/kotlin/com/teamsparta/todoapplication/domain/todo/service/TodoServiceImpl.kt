@@ -63,9 +63,14 @@ class TodoServiceImpl (
     }
     @Transactional
     override fun deleteTodo(todoCardId: Long, todoId: Long) {
-        TODO("예외처리 : todoCardId에 해당하는 ID가 없다면")
-        TODO("예외처리 : todoId에 해당하는 ID가 없다면")
-        TODO("DB에 저장된 값을 삭제")
-        TODO("영속성 전파")
+        //예외처리 : todoCardId에 해당하는 ID가 없다면
+        val todocard = todoCardRepository.findByIdOrNull(todoCardId) ?: throw ModelNotFoundException("TodoCard",todoCardId)
+        // 예외처리 : todoId에 해당하는 ID가 없다면
+        val todo = todoRepository.findByTodocardIdAndId(todoCardId,todoId)
+                ?: throw ModelNotFoundException("Todo",todoId)
+        // 삭제
+        todocard.removeTodo(todo)
+        //영속성 전파
+        todoCardRepository.save(todocard)
     }
 }
