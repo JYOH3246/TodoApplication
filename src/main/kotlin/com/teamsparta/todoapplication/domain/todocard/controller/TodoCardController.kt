@@ -22,8 +22,8 @@ class TodoCardController(
 
     // 2. 단일 작업 조회
     @GetMapping("/{todoCardId}")
-    fun getTodoCard(@PathVariable todoId: Long): ResponseEntity<TodoCardResponse> {
-        return status(HttpStatus.OK).body(todoService.getTodoCardById(todoId))
+    fun getTodoCard(@PathVariable todoCardId: Long): ResponseEntity<TodoCardResponse> {
+        return status(HttpStatus.OK).body(todoService.getTodoCardById(todoCardId))
     }
 
     // 3. 할일 작성하기
@@ -34,13 +34,13 @@ class TodoCardController(
 
     // 4. 할일 수정하기
     @PutMapping("{todoCardId}")
-    fun modifyTodoCard(@PathVariable todoId: Long, @RequestBody modifyTodoCardRequest: ModifyTodoCardRequest): ResponseEntity<TodoCardResponse> {
-        return status(HttpStatus.OK).body(todoService.modifyTodoCard(todoId,modifyTodoCardRequest))
+    fun modifyTodoCard(@PathVariable todoCardId: Long, @RequestBody modifyTodoCardRequest: ModifyTodoCardRequest): ResponseEntity<TodoCardResponse> {
+        return status(HttpStatus.OK).body(todoService.modifyTodoCard(todoCardId,modifyTodoCardRequest))
     }
 
     //5. 할일 삭제하기
     @DeleteMapping("{todoCardId}")
-    fun deleteTodoCard(@PathVariable todoId: Long): ResponseEntity<Unit> {
-        return status(HttpStatus.OK).body(todoService.deleteTodoCard(todoId))
+    fun deleteTodoCard(@PathVariable todoCardId: Long): ResponseEntity<Unit> {
+        return status(HttpStatus.OK).body(todoService.deleteTodoCard(todoCardId))
     }
 }
