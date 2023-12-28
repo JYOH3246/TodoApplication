@@ -2,17 +2,17 @@ package com.teamsparta.todoapplication.domain.todocard.model
 
 import com.teamsparta.todoapplication.domain.todocard.dto.TodoCardResponse
 import jakarta.persistence.*
-import java.time.LocalDate
+import java.util.*
 
 @Entity
 @Table(name = "todocard")
-class TodoCard (
+class TodoCard(
         @Column(name="name")
-        val name : String,
+        val name: String,
         @Column(name="date")
-        val date : LocalDate,
+        val date: Date,
 
-)
+        )
 
 {
     @Id

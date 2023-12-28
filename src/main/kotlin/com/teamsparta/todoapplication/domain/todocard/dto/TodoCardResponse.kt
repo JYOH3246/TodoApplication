@@ -1,10 +1,10 @@
 package com.teamsparta.todoapplication.domain.todocard.dto
 
-import java.time.LocalDate
+import java.util.*
 
 data class TodoCardResponse(
         val id: Long,
-        val name : String,
-        val date :LocalDate,
+        val name: String,
+        val date: Date,
 
-)
+        )

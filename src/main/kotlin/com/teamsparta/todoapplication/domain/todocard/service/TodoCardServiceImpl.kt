@@ -4,6 +4,7 @@ import com.teamsparta.todoapplication.domain.exception.ModelNotFoundException
 import com.teamsparta.todoapplication.domain.todocard.dto.AddTodoCardRequest
 import com.teamsparta.todoapplication.domain.todocard.dto.ModifyTodoCardRequest
 import com.teamsparta.todoapplication.domain.todocard.dto.TodoCardResponse
+import com.teamsparta.todoapplication.domain.todocard.model.TodoCard
 import com.teamsparta.todoapplication.domain.todocard.model.toResponse
 import com.teamsparta.todoapplication.domain.todocard.repository.TodoCardRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -29,8 +30,14 @@ class TodoCardServiceImpl (
     @Transactional
 
     override fun addTodoCard(request: AddTodoCardRequest): TodoCardResponse {
-        // TODO DB : Todo를 추가해 DB에 저장 후, 저장 결과를를 TodoResponse로 변환해 반환하기
-        TODO("Not yet implemented")
+        // Todo를 추가해 DB에 저장 후
+        return todoCardRepository.save(
+                TodoCard(
+                        name = request.name,
+                        date = request.date
+                        )
+        //저장 결과를를 TodoResponse로 변환해 반환하기
+        ).toResponse()
     }
     @Transactional
 
