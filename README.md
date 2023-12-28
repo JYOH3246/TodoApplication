@@ -31,5 +31,3 @@ $ cd todoApplication
   <img src="https://img.shields.io/badge/IntelliJ-000000?style=for-the-badge&logo=Intellijidea&logoColor=white">
   <br>
 </div>
-_____
-
