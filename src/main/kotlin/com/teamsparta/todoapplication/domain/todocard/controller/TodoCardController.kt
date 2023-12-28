@@ -12,35 +12,35 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/todoCard")
 @RestController
 class TodoCardController(
-        private val todoService: TodoCardService
+        private val todoCardService: TodoCardService
 ) {
     // 1. 전체 목록 조회
     @GetMapping
     fun getTodoCardList(): ResponseEntity<List<TodoCardResponse>> {
-        return status(HttpStatus.OK).body(todoService.getAllTodoCard())
+        return status(HttpStatus.OK).body(todoCardService.getAllTodoCard())
     }
 
     // 2. 단일 작업 조회
     @GetMapping("/{todoCardId}")
     fun getTodoCard(@PathVariable todoCardId: Long): ResponseEntity<TodoCardResponse> {
-        return status(HttpStatus.OK).body(todoService.getTodoCardById(todoCardId))
+        return status(HttpStatus.OK).body(todoCardService.getTodoCardById(todoCardId))
     }
 
     // 3. 할일 작성하기
     @PostMapping
     fun addTodoCard(@RequestBody addTodoCardRequest: AddTodoCardRequest): ResponseEntity<TodoCardResponse> {
-        return status(HttpStatus.CREATED).body(todoService.addTodoCard(addTodoCardRequest))
+        return status(HttpStatus.CREATED).body(todoCardService.addTodoCard(addTodoCardRequest))
     }
 
     // 4. 할일 수정하기
     @PutMapping("{todoCardId}")
     fun modifyTodoCard(@PathVariable todoCardId: Long, @RequestBody modifyTodoCardRequest: ModifyTodoCardRequest): ResponseEntity<TodoCardResponse> {
-        return status(HttpStatus.OK).body(todoService.modifyTodoCard(todoCardId,modifyTodoCardRequest))
+        return status(HttpStatus.OK).body(todoCardService.modifyTodoCard(todoCardId,modifyTodoCardRequest))
     }
 
     //5. 할일 삭제하기
     @DeleteMapping("{todoCardId}")
     fun deleteTodoCard(@PathVariable todoCardId: Long): ResponseEntity<Unit> {
-        return status(HttpStatus.OK).body(todoService.deleteTodoCard(todoCardId))
+        return status(HttpStatus.OK).body(todoCardService.deleteTodoCard(todoCardId))
     }
 }
