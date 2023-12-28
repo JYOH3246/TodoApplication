@@ -1,4 +1,10 @@
 package com.teamsparta.todoapplication.domain.todo.dto
 
-class AddTodoRequest {
-}
+import java.util.*
+
+data class AddTodoRequest (
+        val title :String,
+        val content : String,
+        val date : Date
+)
+
