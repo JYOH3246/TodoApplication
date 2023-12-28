@@ -22,6 +22,13 @@ class TodoCard(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
+    fun addTodo(todo : Todo) {
+        todos.add(todo)
+    }
+    fun removeTodo (todo : Todo) {
+        todos.remove(todo)
+    }
+
 }
 fun TodoCard.toResponse () : TodoCardResponse {
     return TodoCardResponse(

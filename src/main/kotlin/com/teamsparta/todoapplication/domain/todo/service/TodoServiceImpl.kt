@@ -4,6 +4,7 @@ import com.teamsparta.todoapplication.domain.exception.ModelNotFoundException
 import com.teamsparta.todoapplication.domain.todo.dto.AddTodoRequest
 import com.teamsparta.todoapplication.domain.todo.dto.ModifyTodoRequset
 import com.teamsparta.todoapplication.domain.todo.dto.TodoResponse
+import com.teamsparta.todoapplication.domain.todo.model.Todo
 import com.teamsparta.todoapplication.domain.todo.model.toResponse
 import com.teamsparta.todoapplication.domain.todo.repository.TodoRepository
 import com.teamsparta.todoapplication.domain.todocard.repository.TodoCardRepository
@@ -29,10 +30,21 @@ class TodoServiceImpl (
     }
     @Transactional
     override fun addTodo(todoCardId: Long, request: AddTodoRequest): TodoResponse {
-        TODO("예외처리 : todoCardId에 해당하는 ID가 없다면")
-        TODO("변수 todo를 정의하기")
-        TODO("Card에 todo를 추가하기")
-        TODO("하위항목 추가 시 영속성 전파하기 : todo -> todoCard -> DB ")
+        // 예외처리 : todoCardId에 해당하는 ID가 없다면
+        val todocard = todoCardRepository.findByIdOrNull(todoCardId) ?: throw ModelNotFoundException("TodoCard",todoCardId)
+        val todo = Todo(
+                title = request.title,
+                content = request.content,
+                date = request.date,
+                // todocard의 인덱스
+                todocard = todocard
+        )
+        // Card에 todo를 추가하기 : TodoCard.kt에 함수를 구현하자
+        todocard.addTodo(todo)
+        // 하위항목 추가 시 영속성 전파하기 todo->todoCard->DB
+        todoCardRepository.save(todocard)
+        //요청받은 todo값을 response로 변환
+        return todo.toResponse()
     }
     @Transactional
     override fun modifyTodo(todoCardId: Long, todoId: Long, request: ModifyTodoRequset): TodoResponse {
