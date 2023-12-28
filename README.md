@@ -31,3 +31,9 @@ $ cd todoApplication
   <img src="https://img.shields.io/badge/IntelliJ-000000?style=for-the-badge&logo=Intellijidea&logoColor=white">
   <br>
 </div>
+
+## API Documents
+![ex_screenshot](./img/API lv1.png)
+
+## ERD
+![ex_screenshot](./img/ERD lv1.png)
