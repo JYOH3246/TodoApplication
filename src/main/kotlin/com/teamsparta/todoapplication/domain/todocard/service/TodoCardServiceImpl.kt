@@ -53,8 +53,9 @@ class TodoCardServiceImpl (
     }
     @Transactional
     override fun deleteTodoCard(todoCardId: Long) {
-        // TODO 예외처리 : 만약 todoId에 해당하는 Todo가 없다면
-        // TODO DB : todoId에 해당하는 Todo를 가져와서 삭제
-        TODO("Not yet implemented")
+        // 예외처리 : todoId에 해당하는 Todo가 존재하지 않는다면 & todocard 정의
+        val todocard = todoCardRepository.findByIdOrNull(todoCardId) ?: throw ModelNotFoundException("TodoCard",todoCardId)
+        // 입력받은 todoCardId를 가진 todoCard를 삭제
+        todoCardRepository.delete(todocard)
     }
 }
