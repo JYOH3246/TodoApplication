@@ -1,6 +1,5 @@
 package com.teamsparta.todoapplication.domain.user.model
 
-import com.teamsparta.todoapplication.domain.todo.model.Todo
 import com.teamsparta.todoapplication.domain.user.dto.UserResponse
 import jakarta.persistence.*
 
