@@ -8,9 +8,9 @@ import java.util.*
 @Table(name = "todocard")
 class TodoCard(
         @Column(name="name")
-        val name: String,
+        var name: String,
         @Column(name="date")
-        val date: Date,
+        var date: Date,
 
         )
 
