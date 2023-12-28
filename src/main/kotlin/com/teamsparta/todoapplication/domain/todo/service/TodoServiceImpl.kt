@@ -48,11 +48,17 @@ class TodoServiceImpl (
     }
     @Transactional
     override fun modifyTodo(todoCardId: Long, todoId: Long, request: ModifyTodoRequset): TodoResponse {
-        TODO("예외처리 : todoCardId에 해당하는 ID가 없다면")
-        TODO("예외처리 : todoId에 해당하는 ID가 없다면")
-        TODO("수정할 변수들을 정의하기")
-        TODO("요청받은 값을 변수에 대입")
-        TODO("DB에 저장하고 response로 변환")
+        // todoID가 없다면
+        val todo = todoRepository.findByTodocardIdAndId(todoCardId,todoId)
+                ?: throw ModelNotFoundException("Todo",todoId)
+        // 수정할 변수들을 정의하기
+        val (title, content, date ) =request
+        // 요청받은 값을 변수에 대입
+        todo.title = title
+        todo.content = content
+        todo.date = date
+        // DB에 저장하고 response로 변환
+        return todoRepository.save(todo).toResponse()
 
     }
     @Transactional
