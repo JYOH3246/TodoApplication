@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/todoCard")
 @RestController
 class TodoCardController(
-        private val todoCardService: TodoCardService
+    private val todoCardService: TodoCardService
 ) {
     // 1. 전체 카드 목록 조회
     @GetMapping
@@ -34,8 +34,11 @@ class TodoCardController(
 
     // 4. 할일카드 수정하기
     @PutMapping("{todoCardId}")
-    fun modifyTodoCard(@PathVariable todoCardId: Long, @RequestBody modifyTodoCardRequest: ModifyTodoCardRequest): ResponseEntity<TodoCardResponse> {
-        return status(HttpStatus.OK).body(todoCardService.modifyTodoCard(todoCardId,modifyTodoCardRequest))
+    fun modifyTodoCard(
+        @PathVariable todoCardId: Long,
+        @RequestBody modifyTodoCardRequest: ModifyTodoCardRequest
+    ): ResponseEntity<TodoCardResponse> {
+        return status(HttpStatus.OK).body(todoCardService.modifyTodoCard(todoCardId, modifyTodoCardRequest))
     }
 
     //5. 할일 삭제하기

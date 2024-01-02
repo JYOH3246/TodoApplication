@@ -9,10 +9,9 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class UserServiceImpl (
+class UserServiceImpl(
     private val userRepository: UserRepository
-)
-    : UserService {
+) : UserService {
     @Transactional
     override fun signUp(request: SignUpRequest): UserResponse {
         /*
@@ -25,6 +24,7 @@ class UserServiceImpl (
             userRepository.existsByEmail(request.email) -> {
                 throw IllegalStateException("Email is already in use")
             }
+
             else -> when {
                 userRepository.existsByNickname(request.nickname) -> {
                     throw IllegalStateException("Nickname is already in use")
@@ -32,15 +32,15 @@ class UserServiceImpl (
             }
         }
         // 기능 : DB에 정보 저장 & 일부 데이터 Response로 반환
-        return userRepository.save (
-                User(
-                        // DB에 저장할 데이터들
-                        email = request.email,
-                        // TODO : 비밀번호 암호화
-                        password = request.password,
-                        name = request.name,
-                        nickname = request.nickname
-                )
+        return userRepository.save(
+            User(
+                // DB에 저장할 데이터들
+                email = request.email,
+                // TODO : 비밀번호 암호화
+                password = request.password,
+                name = request.name,
+                nickname = request.nickname
+            )
         ).toResponse() //response로 반환할 데이터들
     }
 }

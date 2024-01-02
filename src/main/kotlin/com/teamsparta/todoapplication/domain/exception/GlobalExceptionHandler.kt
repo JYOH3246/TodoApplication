@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 class GlobalExceptionHandler { // 이 클래스는 전역적으로 예외를 핸들링할 수 있는 클래스임
 
     @ExceptionHandler(ModelNotFoundException::class) // 어떤 클래스로 처리할 것인가
-    fun handleModelNotFoundException(e: ModelNotFoundException) : ResponseEntity<ErrorResponse> {
+    fun handleModelNotFoundException(e: ModelNotFoundException): ResponseEntity<ErrorResponse> {
         //404 Not Found
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse(message = e.message))
     }
