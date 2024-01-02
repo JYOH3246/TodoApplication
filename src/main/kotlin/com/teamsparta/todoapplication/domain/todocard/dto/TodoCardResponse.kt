@@ -6,4 +6,4 @@ data class TodoCardResponse(
     val id: Long,
     val name: String,
     val date: Date,
-    )
+)

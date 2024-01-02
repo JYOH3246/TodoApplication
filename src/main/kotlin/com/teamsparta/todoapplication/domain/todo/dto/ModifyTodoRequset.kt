@@ -6,5 +6,5 @@ data class ModifyTodoRequset(
     val title: String,
     val content: String,
     val date: Date,
-    val status : Boolean
+    val status: Boolean
 )

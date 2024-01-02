@@ -18,14 +18,14 @@ class TodoServiceImpl(
     private val todoRepository: TodoRepository
 ) : TodoService {
     override fun getAllTodo(todoCardId: Long): List<TodoResponse> {
-        val todocard =
+        val todoCard =
             todoCardRepository.findByIdOrNull(todoCardId) ?: throw ModelNotFoundException("TodoCard", todoCardId)
-        return todocard.todos.map { it.toResponse() }
+        return todoCard.todos.map { it.toResponse() }
 
     }
 
     override fun getTodoById(todoCardId: Long, todoId: Long): TodoResponse {
-        val todo = todoRepository.findByTodocardIdAndId(todoCardId, todoId)
+        val todo = todoRepository.findBytodocardIdAndId(todoCardId, todoId)
             ?: throw ModelNotFoundException("Todo", todoId)
         return todo.toResponse()
     }
@@ -57,7 +57,7 @@ class TodoServiceImpl(
     override fun modifyTodo(todoCardId: Long, todoId: Long, request: ModifyTodoRequset): TodoResponse {
         // todoID가 없다면
         // TODO("status 추가")
-        val todo = todoRepository.findByTodocardIdAndId(todoCardId, todoId)
+        val todo = todoRepository.findBytodocardIdAndId(todoCardId, todoId)
             ?: throw ModelNotFoundException("Todo", todoId)
         // 수정할 변수들을 정의하기
         val (title, content, date, status: Boolean) = request
@@ -77,7 +77,7 @@ class TodoServiceImpl(
         val todocard =
             todoCardRepository.findByIdOrNull(todoCardId) ?: throw ModelNotFoundException("TodoCard", todoCardId)
         // 예외처리 : todoId에 해당하는 ID가 없다면
-        val todo = todoRepository.findByTodocardIdAndId(todoCardId, todoId)
+        val todo = todoRepository.findBytodocardIdAndId(todoCardId, todoId)
             ?: throw ModelNotFoundException("Todo", todoId)
         // 삭제
         todocard.removeTodo(todo)

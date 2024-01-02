@@ -20,13 +20,21 @@ class Todo(
     val todocard: TodoCard,
     @Column(name = "status")
     var status: Boolean = false,
-    @OneToMany(mappedBy = "todocard", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
-    var todocomments : MutableList<TodoComment> = mutableListOf()
+    @OneToMany(mappedBy = "todo", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
+    var todoComments: MutableList<TodoComment> = mutableListOf()
 
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
+
+    fun addTodoComment(todoComment: TodoComment) {
+        todoComments.add(todoComment)
+    }
+
+    fun removeTodoComment(todoComment: TodoComment) {
+        todoComments.remove(todoComment)
+    }
 
 }
 
@@ -37,5 +45,6 @@ fun Todo.toResponse(): TodoResponse {
         content = content,
         date = date,
         status = status.toString()
+        // TODO : Response에 댓글 리스트 추가
     )
 }
