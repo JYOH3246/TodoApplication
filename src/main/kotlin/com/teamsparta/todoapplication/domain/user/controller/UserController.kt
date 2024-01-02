@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class UserController  (
-        private val userService : UserService
+class UserController(
+    private val userService: UserService
 ) {
     /*
     1. 회원가입
@@ -19,9 +19,9 @@ class UserController  (
     예외사항 : 이메일 중복 / 별명 중복
      */
     @PostMapping("/signup")
-    fun signUp(@RequestBody signUpRequest: SignUpRequest) : ResponseEntity<UserResponse> {
+    fun signUp(@RequestBody signUpRequest: SignUpRequest): ResponseEntity<UserResponse> {
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(userService.signUp(signUpRequest))
+            .status(HttpStatus.OK)
+            .body(userService.signUp(signUpRequest))
     }
 }

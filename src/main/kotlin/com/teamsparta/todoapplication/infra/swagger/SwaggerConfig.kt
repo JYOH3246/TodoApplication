@@ -10,14 +10,14 @@ import org.springframework.context.annotation.Configuration
 class SwaggerConfig {
     @Bean
     fun openAPI(): OpenAPI = OpenAPI()
-            .components(Components())
-            .info(
-                    Info()
-                            .title("TODO API")
-                            .description("Todo API schema")
-                            .version("1.0.0")
+        .components(Components())
+        .info(
+            Info()
+                .title("TODO API")
+                .description("Todo API schema")
+                .version("1.0.0")
 
-            )
+        )
 
 
 }
