@@ -1,6 +1,7 @@
 package com.teamsparta.todoapplication.domain.comment.controller
 
 import com.teamsparta.todoapplication.domain.comment.dto.AddTodoCommentRequest
+import com.teamsparta.todoapplication.domain.comment.dto.ModifyTodoCommentRequest
 import com.teamsparta.todoapplication.domain.comment.dto.TodoCommentResponse
 import com.teamsparta.todoapplication.domain.comment.service.TodoCommentService
 import org.springframework.http.HttpStatus
@@ -8,7 +9,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.status
 import org.springframework.web.bind.annotation.*
 
-@RequestMapping("/todoCard/{todoCardId}/todo/{todoId}/comment")
+@RequestMapping("/todoCard/{todoCardId}/todo/{todoId}/todoComment")
 @RestController
 class TodoCommentController(
     private val todoCommentService: TodoCommentService
@@ -33,4 +34,22 @@ class TodoCommentController(
             .body(todoCommentService.addTodoComment(todoCardId, todoId, addTodoCommentRequest))
 
     }
+
+    @PutMapping("/{todoCommentId}")
+    fun modifyTodoComment(
+        @PathVariable todoCardId: Long,
+        @PathVariable todoId: Long,
+        @PathVariable todoCommentId: Long,
+        @RequestBody modifyTodoCommentRequest: ModifyTodoCommentRequest
+    ): ResponseEntity<TodoCommentResponse> {
+        return status(HttpStatus.OK).body(
+            todoCommentService.modifyTodoComment(
+                todoCardId,
+                todoId,
+                todoCommentId,
+                modifyTodoCommentRequest
+            )
+        )
+    }
+
 }
