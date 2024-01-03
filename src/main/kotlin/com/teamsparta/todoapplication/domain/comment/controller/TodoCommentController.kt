@@ -58,12 +58,9 @@ class TodoCommentController(
         @PathVariable todoCardId: Long, @PathVariable todoId: Long,
         @PathVariable todoCommentId: Long,
         @RequestBody deleteTodoCommentRequest: DeleteTodoCommentRequest
-    ): ResponseEntity<Unit> {
-        return status(HttpStatus.OK).body(
-            todoCommentService.deleteTodoComment(
-                todoCardId,todoId,todoCommentId,deleteTodoCommentRequest
-            )
-        )
+    ): ResponseEntity<Any> {
+        todoCommentService.deleteTodoComment(todoCardId,todoId, todoCommentId, deleteTodoCommentRequest)
+        return status(HttpStatus.OK).body("선택하신 댓글이 삭제되었습니다.")
     }
 
 

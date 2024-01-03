@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/todoCard")
 @RestController
 class TodoCardController(
+    // 생성자만 주입했어도, Bean으로 등록했기 때문에 스프링이 알아서 인스턴스화, 조립시켜 준다.
     private val todoCardService: TodoCardService
 ) {
     // 1. 전체 카드 목록 조회
@@ -43,7 +44,8 @@ class TodoCardController(
 
     //5. 할일 삭제하기
     @DeleteMapping("{todoCardId}")
-    fun deleteTodoCard(@PathVariable todoCardId: Long): ResponseEntity<Unit> {
-        return status(HttpStatus.NO_CONTENT).build()
+    fun deleteTodoCard(@PathVariable todoCardId: Long): ResponseEntity<Any> {
+        todoCardService.deleteTodoCard(todoCardId)
+        return status(HttpStatus.NO_CONTENT).body("삭제되었습니다.")
     }
 }
