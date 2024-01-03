@@ -14,4 +14,10 @@ class GlobalExceptionHandler { // 이 클래스는 전역적으로 예외를 핸
         //404 Not Found
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse(message = e.message))
     }
+
+    @ExceptionHandler(IdAndPasswordNotCorrectException::class)
+    fun handleIdAndPasswordNotCorrectException(e:IdAndPasswordNotCorrectException) : ResponseEntity<ErrorResponse> {
+        //404 Not Found
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse(message = e.message))
+    }
 }

@@ -7,6 +7,7 @@ import com.teamsparta.todoapplication.domain.comment.dto.TodoCommentResponse
 import com.teamsparta.todoapplication.domain.comment.model.TodoComment
 import com.teamsparta.todoapplication.domain.comment.model.toResponse
 import com.teamsparta.todoapplication.domain.comment.repository.TodoCommentRepository
+import com.teamsparta.todoapplication.domain.exception.IdAndPasswordNotCorrectException
 import com.teamsparta.todoapplication.domain.exception.ModelNotFoundException
 import com.teamsparta.todoapplication.domain.todo.repository.TodoRepository
 import com.teamsparta.todoapplication.domain.todocard.repository.TodoCardRepository
@@ -66,7 +67,7 @@ class TodoCommentServiceImpl(
             todoComment.date = date
         }
         else {
-            println("이름과 비밀번호를 다시 입력해 주시기 바랍니다.")
+            throw IdAndPasswordNotCorrectException(request.name,request.password)
         }
         return todoCommentRepository.save(todoComment).toResponse()
 
