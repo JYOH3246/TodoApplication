@@ -45,6 +45,6 @@ fun Todo.toResponse(): TodoResponse {
         content = content,
         date = date,
         status = status.toString()
-        // TODO : Response에 댓글 리스트 추가
+        // Response에 댓글 리스트 추가
     )
 }

@@ -65,9 +65,8 @@ class TodoCommentServiceImpl(
             todoComment.comment = comment
             todoComment.name = name
             todoComment.date = date
-        }
-        else {
-            throw IdAndPasswordNotCorrectException(request.name,request.password)
+        } else {
+            throw IdAndPasswordNotCorrectException(request.name, request.password)
         }
         return todoCommentRepository.save(todoComment).toResponse()
 
@@ -80,7 +79,20 @@ class TodoCommentServiceImpl(
         todoCommentId: Long,
         request: DeleteTodoCommentRequest
     ) {
-        TODO("입력받은 이름 비밀번호와 DB에 저장된 이름 비밀번호 비교하기")
-        TODO("메시지와 상태코드 반환하기")
+        val todocard =
+            todoCardRepository.findByIdOrNull(todoCardId) ?: throw ModelNotFoundException("TodoCard", todoCardId)
+        val todo = todoRepository.findBytodocardIdAndId(todoCardId, todoId)
+            ?: throw ModelNotFoundException("Todo", todoId)
+        val todoComment = todoCommentRepository.findByTodoCardIdAndTodoIdAndId(todoCardId, todoId, todoCommentId)
+            ?: throw ModelNotFoundException("TodoComment", todoCommentId)
+
+        todoCommentRepository.findByNameAndPassword(request.name, request.password)
+        if (todoComment.name == request.name && todoComment.password == request.password) {
+            todo.removeTodoComment(todoComment)
+            todoRepository.save(todo)
+            todoCardRepository.save(todocard)
+        } else {
+            throw IdAndPasswordNotCorrectException(request.name, request.password)
+        }
     }
 }
