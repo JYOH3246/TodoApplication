@@ -78,9 +78,15 @@ class TodoServiceImpl(
         todo.content = content
         todo.date = date
         todo.status = status
-        // DB에 저장하고 response로 변환
-        return todoRepository.save(todo).toResponse()
-
+        if (request.title.length in 1..200) {
+            if (request.content.length in 1..1000) {
+                return todoRepository.save(todo).toResponse()
+            } else {
+                throw ContentLetterException(request.content)
+            }
+        } else {
+            throw TitleLetterLengthException(request.title)
+        }
     }
 
     @Transactional
