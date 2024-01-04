@@ -2,6 +2,7 @@ package com.teamsparta.todoapplication.domain.todocard.service
 
 import com.teamsparta.todoapplication.domain.exception.ModelNotFoundException
 import com.teamsparta.todoapplication.domain.todocard.dto.AddTodoCardRequest
+import com.teamsparta.todoapplication.domain.todocard.dto.GetTodoCardRequest
 import com.teamsparta.todoapplication.domain.todocard.dto.ModifyTodoCardRequest
 import com.teamsparta.todoapplication.domain.todocard.dto.TodoCardResponse
 import com.teamsparta.todoapplication.domain.todocard.model.TodoCard
@@ -17,9 +18,41 @@ class TodoCardServiceImpl(
     private val todoCardRepository: TodoCardRepository
 
 ) : TodoCardService {
-    override fun getAllTodoCard(): List<TodoCardResponse> {
+    override fun getAllTodoCard(
+        name: String,
+        request: GetTodoCardRequest
+    ): List<TodoCardResponse> {
         // todoRepository에 존재하는 todo를 전부 출력
-        return todoCardRepository.findAll().map { it.toResponse() }
+        return when {
+            (request == GetTodoCardRequest.ASC) -> {
+                if (name == "All") {
+                    todoCardRepository.findAllByOrderByDateAsc().map { it.toResponse() }
+
+                } else {
+                    todoCardRepository.findByNameOrderByDateAsc(name).map { it.toResponse() }
+                }
+            }
+
+            (request == GetTodoCardRequest.DESC) -> {
+                if (name == "All") {
+                    todoCardRepository.findAllByOrderByDateDesc().map { it.toResponse() }
+
+                } else {
+                    todoCardRepository.findByNameOrderByDateDesc(name).map { it.toResponse() }
+                }
+
+            }
+            else -> {
+                if (name == "All") {
+                    todoCardRepository.findAll().map { it.toResponse() }
+
+                } else {
+                    todoCardRepository.findByName(name).map { it.toResponse() }
+                }
+
+            }
+
+        }
     }
 
     override fun getTodoCardById(todoCardId: Long): TodoCardResponse {

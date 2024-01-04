@@ -22,7 +22,7 @@ class TodoServiceImpl(
         val todoCard =
             todoCardRepository.findByIdOrNull(todoCardId) ?: throw ModelNotFoundException("TodoCard", todoCardId)
         when {
-            (request == GetTodoRequest.ASC) ->todoCard.todos = todoRepository.findAllByOrderByDateAsc()
+            (request== GetTodoRequest.ASC) ->todoCard.todos = todoRepository.findAllByOrderByDateAsc()
             (request==GetTodoRequest.DESC)->todoCard.todos = todoRepository.findAllByOrderByDateDesc()
         }
         return todoCard.todos.map { it.toResponse() }

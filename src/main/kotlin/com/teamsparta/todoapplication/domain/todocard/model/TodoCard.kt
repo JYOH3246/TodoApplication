@@ -34,7 +34,6 @@ fun TodoCard.toResponse(): TodoCardResponse {
     return TodoCardResponse(
         id = id!!,
         date = date,
-        name = name
-
+        name = name,
     )
 }
