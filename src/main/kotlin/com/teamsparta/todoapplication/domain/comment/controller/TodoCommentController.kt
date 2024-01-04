@@ -17,7 +17,7 @@ class TodoCommentController(
     //1. 목록 조회하기
     @GetMapping
     fun getTodoComment(
-        @PathVariable todoId: Long, @PathVariable todoCardId: String
+        @PathVariable todoCardId: String,@PathVariable todoId: Long
     ): ResponseEntity<List<TodoCommentResponse>> {
         return status(200).body(todoCommentService.getTodoComment(todoId))
     }

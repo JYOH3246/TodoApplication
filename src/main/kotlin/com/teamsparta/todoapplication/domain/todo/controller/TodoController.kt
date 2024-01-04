@@ -1,9 +1,6 @@
 package com.teamsparta.todoapplication.domain.todo.controller
 
-import com.teamsparta.todoapplication.domain.todo.dto.AddTodoRequest
-import com.teamsparta.todoapplication.domain.todo.dto.GetTodoRequest
-import com.teamsparta.todoapplication.domain.todo.dto.ModifyTodoRequset
-import com.teamsparta.todoapplication.domain.todo.dto.TodoResponse
+import com.teamsparta.todoapplication.domain.todo.dto.*
 import com.teamsparta.todoapplication.domain.todo.service.TodoService
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.status
@@ -19,7 +16,7 @@ class TodoController(
     fun getTodoList(
         @PathVariable todoCardId: Long,
         @RequestParam getTodoRequest: GetTodoRequest
-    ): ResponseEntity<List<TodoResponse>> {
+    ): ResponseEntity<List<TodoResponseForAll>> {
         return status(200).body(todoService.getAllTodo(todoCardId, getTodoRequest))
     }
 
@@ -43,7 +40,7 @@ class TodoController(
     fun modifyTodo(
         @PathVariable todoCardId: Long,
         @PathVariable todoId: Long,
-        @RequestBody modifyTodoRequset: ModifyTodoRequset
+        @RequestBody modifyTodoRequset: ModifyTodoRequest
     ): ResponseEntity<TodoResponse> {
         return status(200).body(todoService.modifyTodo(todoCardId, todoId, modifyTodoRequset))
     }

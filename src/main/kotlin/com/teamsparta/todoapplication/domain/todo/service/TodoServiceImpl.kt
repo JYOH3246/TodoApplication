@@ -3,12 +3,10 @@ package com.teamsparta.todoapplication.domain.todo.service
 import com.teamsparta.todoapplication.domain.exception.ContentLetterException
 import com.teamsparta.todoapplication.domain.exception.ModelNotFoundException
 import com.teamsparta.todoapplication.domain.exception.TitleLetterLengthException
-import com.teamsparta.todoapplication.domain.todo.dto.AddTodoRequest
-import com.teamsparta.todoapplication.domain.todo.dto.GetTodoRequest
-import com.teamsparta.todoapplication.domain.todo.dto.ModifyTodoRequset
-import com.teamsparta.todoapplication.domain.todo.dto.TodoResponse
+import com.teamsparta.todoapplication.domain.todo.dto.*
 import com.teamsparta.todoapplication.domain.todo.model.Todo
 import com.teamsparta.todoapplication.domain.todo.model.toResponse
+import com.teamsparta.todoapplication.domain.todo.model.toResponseForAll
 import com.teamsparta.todoapplication.domain.todo.repository.TodoRepository
 import com.teamsparta.todoapplication.domain.todocard.repository.TodoCardRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -20,14 +18,14 @@ class TodoServiceImpl(
     private val todoCardRepository: TodoCardRepository,
     private val todoRepository: TodoRepository
 ) : TodoService {
-    override fun getAllTodo(todoCardId: Long, request: GetTodoRequest): List<TodoResponse> {
+    override fun getAllTodo(todoCardId: Long, request: GetTodoRequest): List<TodoResponseForAll> {
         val todoCard =
             todoCardRepository.findByIdOrNull(todoCardId) ?: throw ModelNotFoundException("TodoCard", todoCardId)
         when {
             (request == GetTodoRequest.ASC) -> todoCard.todos = todoRepository.findAllByOrderByDateAsc()
             (request == GetTodoRequest.DESC) -> todoCard.todos = todoRepository.findAllByOrderByDateDesc()
         }
-        return todoCard.todos.map { it.toResponse() }
+        return todoCard.todos.map { it.toResponseForAll() }
 
     }
 
@@ -67,7 +65,7 @@ class TodoServiceImpl(
     }
 
     @Transactional
-    override fun modifyTodo(todoCardId: Long, todoId: Long, request: ModifyTodoRequset): TodoResponse {
+    override fun modifyTodo(todoCardId: Long, todoId: Long, request: ModifyTodoRequest): TodoResponse {
         // todoID가 없다면
         val todo = todoRepository.findBytodocardIdAndId(todoCardId, todoId)
             ?: throw ModelNotFoundException("Todo", todoId)

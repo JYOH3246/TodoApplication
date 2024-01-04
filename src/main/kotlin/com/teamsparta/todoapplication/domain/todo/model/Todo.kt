@@ -3,6 +3,7 @@ package com.teamsparta.todoapplication.domain.todo.model
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.teamsparta.todoapplication.domain.comment.model.TodoComment
 import com.teamsparta.todoapplication.domain.todo.dto.TodoResponse
+import com.teamsparta.todoapplication.domain.todo.dto.TodoResponseForAll
 import com.teamsparta.todoapplication.domain.todocard.model.TodoCard
 import jakarta.persistence.*
 import java.util.*
@@ -48,6 +49,15 @@ fun Todo.toResponse(): TodoResponse {
         date = date,
         status = status.toString(),
         todoComments = todoComments
+    )
+}
+fun Todo.toResponseForAll(): TodoResponseForAll {
+    return TodoResponseForAll(
+        id = id!!,
+        title = title,
+        content = content,
+        date = date,
+        status = status.toString()
     )
 }
 
