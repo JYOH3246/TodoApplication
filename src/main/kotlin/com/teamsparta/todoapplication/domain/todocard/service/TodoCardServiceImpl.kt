@@ -42,6 +42,7 @@ class TodoCardServiceImpl(
                 }
 
             }
+
             else -> {
                 if (name == "All") {
                     todoCardRepository.findAll().map { it.toResponse() }

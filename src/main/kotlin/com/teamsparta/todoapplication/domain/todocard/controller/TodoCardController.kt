@@ -22,7 +22,7 @@ class TodoCardController(
         @RequestParam name: String,
         @RequestParam getTodoCardRequest: GetTodoCardRequest
     ): ResponseEntity<List<TodoCardResponse>> {
-        return status(HttpStatus.OK).body(todoCardService.getAllTodoCard(name,getTodoCardRequest))
+        return status(HttpStatus.OK).body(todoCardService.getAllTodoCard(name, getTodoCardRequest))
     }
 
     // 2. 단일 카드 조회

@@ -6,7 +6,7 @@ import com.teamsparta.todoapplication.domain.todocard.dto.ModifyTodoCardRequest
 import com.teamsparta.todoapplication.domain.todocard.dto.TodoCardResponse
 
 interface TodoCardService {
-    fun getAllTodoCard(name: String,request: GetTodoCardRequest): List<TodoCardResponse>
+    fun getAllTodoCard(name: String, request: GetTodoCardRequest): List<TodoCardResponse>
     fun getTodoCardById(todoCardId: Long): TodoCardResponse
     fun addTodoCard(request: AddTodoCardRequest): TodoCardResponse
     fun modifyTodoCard(todoCardId: Long, request: ModifyTodoCardRequest): TodoCardResponse

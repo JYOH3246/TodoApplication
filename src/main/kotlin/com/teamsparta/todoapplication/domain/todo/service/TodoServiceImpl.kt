@@ -1,6 +1,8 @@
 package com.teamsparta.todoapplication.domain.todo.service
 
+import com.teamsparta.todoapplication.domain.exception.ContentLetterException
 import com.teamsparta.todoapplication.domain.exception.ModelNotFoundException
+import com.teamsparta.todoapplication.domain.exception.TitleLetterLengthException
 import com.teamsparta.todoapplication.domain.todo.dto.AddTodoRequest
 import com.teamsparta.todoapplication.domain.todo.dto.GetTodoRequest
 import com.teamsparta.todoapplication.domain.todo.dto.ModifyTodoRequset
@@ -22,8 +24,8 @@ class TodoServiceImpl(
         val todoCard =
             todoCardRepository.findByIdOrNull(todoCardId) ?: throw ModelNotFoundException("TodoCard", todoCardId)
         when {
-            (request== GetTodoRequest.ASC) ->todoCard.todos = todoRepository.findAllByOrderByDateAsc()
-            (request==GetTodoRequest.DESC)->todoCard.todos = todoRepository.findAllByOrderByDateDesc()
+            (request == GetTodoRequest.ASC) -> todoCard.todos = todoRepository.findAllByOrderByDateAsc()
+            (request == GetTodoRequest.DESC) -> todoCard.todos = todoRepository.findAllByOrderByDateDesc()
         }
         return todoCard.todos.map { it.toResponse() }
 
@@ -50,18 +52,23 @@ class TodoServiceImpl(
             // todocard의 인덱스
             todocard = todocard
         )
-        // Card에 todo를 추가하기 : TodoCard.kt에 함수를 구현하자
-        todocard.addTodo(todo)
-        // 하위항목 추가 시 영속성 전파하기 todo->todoCard->DB
-        todoCardRepository.save(todocard)
-        //요청받은 todo값을 response로 변환
-        return todo.toResponse()
+        if (request.title.length in 1..200) {
+            if (request.content.length in 1..1000) {
+                todocard.addTodo(todo)
+                todoCardRepository.save(todocard)
+                return todoRepository.save(todo).toResponse()
+            } else {
+                throw ContentLetterException(request.content)
+            }
+        } else {
+            throw TitleLetterLengthException(request.title)
+        }
+
     }
 
     @Transactional
     override fun modifyTodo(todoCardId: Long, todoId: Long, request: ModifyTodoRequset): TodoResponse {
         // todoID가 없다면
-        // TODO("status 추가")
         val todo = todoRepository.findBytodocardIdAndId(todoCardId, todoId)
             ?: throw ModelNotFoundException("Todo", todoId)
         // 수정할 변수들을 정의하기

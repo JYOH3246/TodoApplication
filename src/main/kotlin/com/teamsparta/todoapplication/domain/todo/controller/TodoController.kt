@@ -17,7 +17,10 @@ class TodoController(
 ) {
     // 1. 전체 목록 조회
     @GetMapping
-    fun getTodoList(@PathVariable todoCardId: Long, @RequestParam getTodoRequest: GetTodoRequest): ResponseEntity<List<TodoResponse>> {
+    fun getTodoList(
+        @PathVariable todoCardId: Long,
+        @RequestParam getTodoRequest: GetTodoRequest
+    ): ResponseEntity<List<TodoResponse>> {
         return status(HttpStatus.OK).body(todoService.getAllTodo(todoCardId, getTodoRequest))
     }
 
