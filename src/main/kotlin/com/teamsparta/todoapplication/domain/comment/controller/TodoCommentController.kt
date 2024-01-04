@@ -5,7 +5,6 @@ import com.teamsparta.todoapplication.domain.comment.dto.DeleteTodoCommentReques
 import com.teamsparta.todoapplication.domain.comment.dto.ModifyTodoCommentRequest
 import com.teamsparta.todoapplication.domain.comment.dto.TodoCommentResponse
 import com.teamsparta.todoapplication.domain.comment.service.TodoCommentService
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.status
 import org.springframework.web.bind.annotation.*
@@ -20,7 +19,7 @@ class TodoCommentController(
     fun getTodoComment(
         @PathVariable todoId: Long, @PathVariable todoCardId: String
     ): ResponseEntity<List<TodoCommentResponse>> {
-        return status(HttpStatus.OK).body(todoCommentService.getTodoComment(todoId))
+        return status(200).body(todoCommentService.getTodoComment(todoId))
     }
 
     @PostMapping
@@ -45,7 +44,7 @@ class TodoCommentController(
         @PathVariable todoCommentId: Long,
         @RequestBody modifyTodoCommentRequest: ModifyTodoCommentRequest
     ): ResponseEntity<TodoCommentResponse> {
-        return status(HttpStatus.OK).body(
+        return status(200).body(
             todoCommentService.modifyTodoComment(
                 todoCardId, todoId, todoCommentId, modifyTodoCommentRequest
             )
