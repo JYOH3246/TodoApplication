@@ -1,5 +1,6 @@
 package com.teamsparta.todoapplication.domain.comment.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.teamsparta.todoapplication.domain.comment.dto.TodoCommentResponse
 import com.teamsparta.todoapplication.domain.todo.model.Todo
 import com.teamsparta.todoapplication.domain.todocard.model.TodoCard
@@ -15,14 +16,16 @@ class TodoComment(
     var name: String,
     @Column(name = "date")
     var date: Date,
+    @JsonIgnore
     @Column(name = "password")
-    var password: String,
+    val password: String,
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "todo_id")
     val todo: Todo,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "todocard_id")
-    val todoCard: TodoCard
+    private val todoCard: TodoCard
 
 
 ) {

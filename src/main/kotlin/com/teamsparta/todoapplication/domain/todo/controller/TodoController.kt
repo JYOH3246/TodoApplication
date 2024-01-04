@@ -20,7 +20,7 @@ class TodoController(
         return status(HttpStatus.OK).body(todoService.getAllTodo(todoCardId))
     }
 
-    // 2. 단일 작업 조회
+    // 2. 단일 작업 조회 + 댓글 목록 조회하기
     @GetMapping("/{todoId}")
     fun getTodo(@PathVariable todoCardId: Long, @PathVariable todoId: Long): ResponseEntity<TodoResponse> {
         return status(HttpStatus.OK).body(todoService.getTodoById(todoCardId, todoId))

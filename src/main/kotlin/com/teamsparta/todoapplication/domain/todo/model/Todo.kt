@@ -1,5 +1,6 @@
 package com.teamsparta.todoapplication.domain.todo.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.teamsparta.todoapplication.domain.comment.model.TodoComment
 import com.teamsparta.todoapplication.domain.todo.dto.TodoResponse
 import com.teamsparta.todoapplication.domain.todocard.model.TodoCard
@@ -21,6 +22,7 @@ class Todo(
     @Column(name = "status")
     var status: Boolean = false,
     @OneToMany(mappedBy = "todo", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
+    @JsonIgnore
     var todoComments: MutableList<TodoComment> = mutableListOf()
 
 ) {
@@ -44,7 +46,8 @@ fun Todo.toResponse(): TodoResponse {
         title = title,
         content = content,
         date = date,
-        status = status.toString()
-        // Response에 댓글 리스트 추가
+        status = status.toString(),
+        todoComments = todoComments
     )
 }
+

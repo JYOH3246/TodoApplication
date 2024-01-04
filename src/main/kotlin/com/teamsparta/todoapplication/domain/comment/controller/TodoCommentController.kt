@@ -20,7 +20,7 @@ class TodoCommentController(
     fun getTodoComment(
         @PathVariable todoId: Long, @PathVariable todoCardId: String
     ): ResponseEntity<List<TodoCommentResponse>> {
-        return status(HttpStatus.CREATED).body(todoCommentService.getTodoComment(todoId))
+        return status(HttpStatus.OK).body(todoCommentService.getTodoComment(todoId))
     }
 
     @PostMapping
@@ -29,14 +29,13 @@ class TodoCommentController(
         @PathVariable todoId: Long,
         @RequestBody addTodoCommentRequest: AddTodoCommentRequest
     ): ResponseEntity<TodoCommentResponse> {
-        return status(HttpStatus.CREATED).body(
+        return status(201).body(
             todoCommentService.addTodoComment(
                 todoCardId,
                 todoId,
                 addTodoCommentRequest
             )
         )
-
     }
 
     @PutMapping("/{todoCommentId}")
@@ -60,7 +59,7 @@ class TodoCommentController(
         @RequestBody deleteTodoCommentRequest: DeleteTodoCommentRequest
     ): ResponseEntity<Any> {
         todoCommentService.deleteTodoComment(todoCardId,todoId, todoCommentId, deleteTodoCommentRequest)
-        return status(HttpStatus.OK).body("선택하신 댓글이 삭제되었습니다.")
+        return status(200).body("선택하신 댓글이 삭제되었습니다.")
     }
 
 
