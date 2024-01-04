@@ -1,6 +1,7 @@
 package com.teamsparta.todoapplication.domain.todo.controller
 
 import com.teamsparta.todoapplication.domain.todo.dto.AddTodoRequest
+import com.teamsparta.todoapplication.domain.todo.dto.GetTodoRequest
 import com.teamsparta.todoapplication.domain.todo.dto.ModifyTodoRequset
 import com.teamsparta.todoapplication.domain.todo.dto.TodoResponse
 import com.teamsparta.todoapplication.domain.todo.service.TodoService
@@ -16,8 +17,8 @@ class TodoController(
 ) {
     // 1. 전체 목록 조회
     @GetMapping
-    fun getTodoList(@PathVariable todoCardId: Long): ResponseEntity<List<TodoResponse>> {
-        return status(HttpStatus.OK).body(todoService.getAllTodo(todoCardId))
+    fun getTodoList(@PathVariable todoCardId: Long, @RequestParam getTodoRequest: GetTodoRequest): ResponseEntity<List<TodoResponse>> {
+        return status(HttpStatus.OK).body(todoService.getAllTodo(todoCardId, getTodoRequest))
     }
 
     // 2. 단일 작업 조회 + 댓글 목록 조회하기

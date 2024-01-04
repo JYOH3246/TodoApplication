@@ -2,6 +2,7 @@ package com.teamsparta.todoapplication.domain.todo.service
 
 import com.teamsparta.todoapplication.domain.exception.ModelNotFoundException
 import com.teamsparta.todoapplication.domain.todo.dto.AddTodoRequest
+import com.teamsparta.todoapplication.domain.todo.dto.GetTodoRequest
 import com.teamsparta.todoapplication.domain.todo.dto.ModifyTodoRequset
 import com.teamsparta.todoapplication.domain.todo.dto.TodoResponse
 import com.teamsparta.todoapplication.domain.todo.model.Todo
@@ -17,9 +18,13 @@ class TodoServiceImpl(
     private val todoCardRepository: TodoCardRepository,
     private val todoRepository: TodoRepository
 ) : TodoService {
-    override fun getAllTodo(todoCardId: Long): List<TodoResponse> {
+    override fun getAllTodo(todoCardId: Long, request: GetTodoRequest): List<TodoResponse> {
         val todoCard =
             todoCardRepository.findByIdOrNull(todoCardId) ?: throw ModelNotFoundException("TodoCard", todoCardId)
+        when {
+            (request == GetTodoRequest.ASC) ->todoCard.todos = todoRepository.findAllByOrderByDateAsc()
+            (request==GetTodoRequest.DESC)->todoCard.todos = todoRepository.findAllByOrderByDateDesc()
+        }
         return todoCard.todos.map { it.toResponse() }
 
     }
