@@ -95,6 +95,7 @@ class TodoServiceImpl(
         // 예외처리 : todoId에 해당하는 ID가 없다면
         val todo = todoRepository.findBytodocardIdAndId(todoCardId, todoId)
             ?: throw ModelNotFoundException("Todo", todoId)
+
         // 삭제
         todocard.removeTodo(todo)
         //영속성 전파
