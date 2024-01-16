@@ -5,7 +5,6 @@ import com.teamsparta.todoapplication.domain.comment.dto.CommentResponse
 import com.teamsparta.todoapplication.domain.todo.model.Todo
 import com.teamsparta.todoapplication.domain.todocard.model.TodoCard
 import jakarta.persistence.*
-import java.util.*
 
 @Entity
 @Table(name = "todo_comment")
@@ -14,8 +13,6 @@ class Comment(
     var content: String,
     @Column(name = "name")
     var name: String,
-    @Column(name = "date")
-    var date: Date,
     @JsonIgnore
     @Column(name = "password")
     val password: String,
@@ -39,7 +36,6 @@ fun Comment.toResponse(): CommentResponse {
     return CommentResponse(
         id = id!!,
         content = content,
-        date = date,
         name = name
     )
 }

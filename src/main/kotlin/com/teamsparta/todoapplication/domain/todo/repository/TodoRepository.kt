@@ -5,6 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface TodoRepository : JpaRepository<Todo, Long> {
     fun findBytodocardIdAndId(todoCardId: Long, todoId: Long): Todo?
-    fun findAllByOrderByDateAsc(): MutableList<Todo>
-    fun findAllByOrderByDateDesc(): MutableList<Todo>
 }

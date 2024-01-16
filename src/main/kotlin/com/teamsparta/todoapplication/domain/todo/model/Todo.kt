@@ -1,12 +1,12 @@
 package com.teamsparta.todoapplication.domain.todo.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.teamsparta.todoapplication.domain.BaseTimeEntity
 import com.teamsparta.todoapplication.domain.comment.model.Comment
 import com.teamsparta.todoapplication.domain.todo.dto.TodoResponse
 import com.teamsparta.todoapplication.domain.todo.dto.TodoResponseForAll
 import com.teamsparta.todoapplication.domain.todocard.model.TodoCard
 import jakarta.persistence.*
-import java.util.*
 
 @Entity
 @Table(name = "todo")
@@ -15,8 +15,6 @@ class Todo(
     var title: String,
     @Column(name = "content")
     var content: String,
-    @Column(name = "date")
-    var date: Date,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "todocard_id")
     val todocard: TodoCard,
@@ -26,7 +24,7 @@ class Todo(
     @JsonIgnore
     var comments: MutableList<Comment> = mutableListOf()
 
-) {
+): BaseTimeEntity()  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
@@ -46,7 +44,6 @@ fun Todo.toResponse(): TodoResponse {
         id = id!!,
         title = title,
         content = content,
-        date = date,
         status = status.toString(),
         comments = comments
     )
@@ -56,7 +53,6 @@ fun Todo.toResponseForAll(): TodoResponseForAll {
         id = id!!,
         title = title,
         content = content,
-        date = date,
         status = status.toString()
     )
 }

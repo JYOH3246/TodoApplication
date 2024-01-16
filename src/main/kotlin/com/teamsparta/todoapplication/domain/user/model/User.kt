@@ -1,5 +1,6 @@
 package com.teamsparta.todoapplication.domain.user.model
 
+import com.teamsparta.todoapplication.domain.BaseTimeEntity
 import com.teamsparta.todoapplication.domain.user.dto.UserResponse
 import jakarta.persistence.*
 
@@ -22,7 +23,7 @@ class User(
     val role : UserRole,
 
 
-    ) {
+    ) : BaseTimeEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null

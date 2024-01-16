@@ -21,10 +21,6 @@ class TodoServiceImpl(
     override fun getAllTodo(todoCardId: Long, request: GetTodoRequest): List<TodoResponseForAll> {
         val todoCard =
             todoCardRepository.findByIdOrNull(todoCardId) ?: throw ModelNotFoundException("TodoCard", todoCardId)
-        when {
-            (request == GetTodoRequest.ASC) -> todoCard.todos = todoRepository.findAllByOrderByDateAsc()
-            (request == GetTodoRequest.DESC) -> todoCard.todos = todoRepository.findAllByOrderByDateDesc()
-        }
         return todoCard.todos.map { it.toResponseForAll() }
 
     }
@@ -45,7 +41,6 @@ class TodoServiceImpl(
         val todo = Todo(
             title = request.title,
             content = request.content,
-            date = request.date,
             status = request.status,
             // todocard의 인덱스
             todocard = todocard
@@ -70,11 +65,10 @@ class TodoServiceImpl(
         val todo = todoRepository.findBytodocardIdAndId(todoCardId, todoId)
             ?: throw ModelNotFoundException("Todo", todoId)
         // 수정할 변수들을 정의하기
-        val (title, content, date, status: Boolean) = request
+        val (title, content, status: Boolean) = request
         // 요청받은 값을 변수에 대입
         todo.title = title
         todo.content = content
-        todo.date = date
         todo.status = status
         if (request.title.length in 1..200) {
             if (request.content.length in 1..1000) {
