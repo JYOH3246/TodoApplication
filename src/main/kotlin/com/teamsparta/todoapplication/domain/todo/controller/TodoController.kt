@@ -15,7 +15,7 @@ class TodoController(
     @GetMapping
     fun getTodoList(
         @PathVariable todoCardId: Long,
-        @RequestParam getTodoRequest: GetTodoRequest
+        @RequestParam getTodoRequest: GetTodoRequest,
     ): ResponseEntity<List<TodoResponseForAll>> {
         return status(200).body(todoService.getAllTodo(todoCardId, getTodoRequest))
     }

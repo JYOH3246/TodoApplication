@@ -1,6 +1,6 @@
 package com.teamsparta.todoapplication.domain.todo.dto
 
-import com.teamsparta.todoapplication.domain.comment.model.TodoComment
+import com.teamsparta.todoapplication.domain.comment.model.Comment
 import java.util.*
 
 data class TodoResponse(
@@ -9,5 +9,5 @@ data class TodoResponse(
     val content: String,
     val date: Date,
     val status: String,
-    val todoComments: MutableList<TodoComment>
+    val comments: MutableList<Comment>
 )

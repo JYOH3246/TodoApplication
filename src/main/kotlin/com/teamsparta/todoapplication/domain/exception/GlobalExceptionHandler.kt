@@ -18,18 +18,29 @@ class GlobalExceptionHandler { // 이 클래스는 전역적으로 예외를 핸
     @ExceptionHandler(IdAndPasswordNotCorrectException::class)
     fun handleIdAndPasswordNotCorrectException(e: IdAndPasswordNotCorrectException): ResponseEntity<ErrorResponse> {
         //400 Bad Request
-        return ResponseEntity.status(400).body(ErrorResponse(message = e.message))
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponse(message = e.message))
     }
 
     @ExceptionHandler(TitleLetterLengthException::class)
     fun handleTitleLetterLengthException(e: TitleLetterLengthException): ResponseEntity<ErrorResponse> {
         //400 Bad Request
-        return ResponseEntity.status(400).body(ErrorResponse(message = e.message))
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponse(message = e.message))
     }
 
     @ExceptionHandler(ContentLetterException::class)
     fun handleContentLetterException(e: ContentLetterException): ResponseEntity<ErrorResponse> {
         //400 Bad Request
-        return ResponseEntity.status(400).body(ErrorResponse(message = e.message))
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponse(message = e.message))
+    }
+
+    @ExceptionHandler(InvalidCredentialException::class)
+    fun handleInvalidCredentialException(e: InvalidCredentialException): ResponseEntity<ErrorResponse> {
+        //400 Bad Request
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ErrorResponse(message = e.message))
+    }
+    @ExceptionHandler(InvalidInputException::class)
+    fun handleInvalidInputException(e: InvalidInputException): ResponseEntity<ErrorResponse> {
+        //400 Bad Request
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ErrorResponse(message = e.message))
     }
 }

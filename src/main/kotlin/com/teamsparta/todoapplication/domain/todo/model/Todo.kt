@@ -1,7 +1,7 @@
 package com.teamsparta.todoapplication.domain.todo.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.teamsparta.todoapplication.domain.comment.model.TodoComment
+import com.teamsparta.todoapplication.domain.comment.model.Comment
 import com.teamsparta.todoapplication.domain.todo.dto.TodoResponse
 import com.teamsparta.todoapplication.domain.todo.dto.TodoResponseForAll
 import com.teamsparta.todoapplication.domain.todocard.model.TodoCard
@@ -24,19 +24,19 @@ class Todo(
     var status: Boolean = false,
     @OneToMany(mappedBy = "todo", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
     @JsonIgnore
-    var todoComments: MutableList<TodoComment> = mutableListOf()
+    var comments: MutableList<Comment> = mutableListOf()
 
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
-    fun addTodoComment(todoComment: TodoComment) {
-        todoComments.add(todoComment)
+    fun addComment(comment: Comment) {
+        comments.add(comment)
     }
 
-    fun removeTodoComment(todoComment: TodoComment) {
-        todoComments.remove(todoComment)
+    fun removeComment(comment: Comment) {
+        comments.remove(comment)
     }
 
 }
@@ -48,7 +48,7 @@ fun Todo.toResponse(): TodoResponse {
         content = content,
         date = date,
         status = status.toString(),
-        todoComments = todoComments
+        comments = comments
     )
 }
 fun Todo.toResponseForAll(): TodoResponseForAll {

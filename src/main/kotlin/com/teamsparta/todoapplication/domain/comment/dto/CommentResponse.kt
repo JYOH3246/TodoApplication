@@ -2,9 +2,9 @@ package com.teamsparta.todoapplication.domain.comment.dto
 
 import java.util.*
 
-data class TodoCommentResponse(
+data class CommentResponse(
     val id: Long,
-    val comment: String,
+    val content: String,
     val name: String,
     val date: Date
 )

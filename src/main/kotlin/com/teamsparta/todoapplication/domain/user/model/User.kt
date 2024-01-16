@@ -17,6 +17,10 @@ class User(
 
     @Column(name = "nickname")
     val nickname: String,
+    @Enumerated(EnumType.STRING)
+    @Column(name="role")
+    val role : UserRole,
+
 
     ) {
     @Id
@@ -28,6 +32,8 @@ fun User.toResponse(): UserResponse {
     return UserResponse(
         id = id!!,
         nickname = nickname,
-        email = email
+        email = email,
+        role = role.name
+
     )
 }
