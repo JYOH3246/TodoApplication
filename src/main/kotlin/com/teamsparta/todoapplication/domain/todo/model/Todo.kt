@@ -40,7 +40,7 @@ class Todo(
         comments.remove(comment)
     }
     fun checkAddingLetterSpace (todoCard:TodoCard,todo: Todo, request: AddTodoRequest) {
-        if (request.title.length in 1..10) {
+        if (request.title.length in 1..200) {
             if (request.content.length in 1..1000) {
                 todoCard.addTodo(todo)
             } else {
@@ -52,7 +52,7 @@ class Todo(
     }
 
     fun checkModifyingLetterSpace(request: ModifyTodoRequest) {
-        if (request.title.length in 1..10) {
+        if (request.title.length in 1..200) {
             if (request.content.length in 1..1000) {
                 title = request.title
                 content = request.content
