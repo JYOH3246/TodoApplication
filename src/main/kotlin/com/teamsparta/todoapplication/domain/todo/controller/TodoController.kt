@@ -1,6 +1,9 @@
 package com.teamsparta.todoapplication.domain.todo.controller
 
-import com.teamsparta.todoapplication.domain.todo.dto.*
+import com.teamsparta.todoapplication.domain.todo.dto.AddTodoRequest
+import com.teamsparta.todoapplication.domain.todo.dto.ModifyTodoRequest
+import com.teamsparta.todoapplication.domain.todo.dto.TodoResponse
+import com.teamsparta.todoapplication.domain.todo.dto.TodoResponseForAll
 import com.teamsparta.todoapplication.domain.todo.service.TodoService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -16,9 +19,8 @@ class TodoController(
     @GetMapping
     fun getTodoList(
         @PathVariable todoCardId: Long,
-        @RequestParam getTodoRequest: GetTodoRequest,
     ): ResponseEntity<List<TodoResponseForAll>> {
-        return status(HttpStatus.OK).body(todoService.getAllTodo(todoCardId, getTodoRequest))
+        return status(HttpStatus.OK).body(todoService.getAllTodo(todoCardId))
     }
 
     // 2. 단일 작업 조회 + 댓글 목록 조회하기

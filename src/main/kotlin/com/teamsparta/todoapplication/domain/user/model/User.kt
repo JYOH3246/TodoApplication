@@ -19,15 +19,22 @@ class User(
     @Column(name = "nickname")
     val nickname: String,
     @Enumerated(EnumType.STRING)
-    @Column(name="role")
-    val role : UserRole,
+    @Column(name = "role")
+    val role: UserRole,
 
 
     ) : BaseTimeEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
+
+
 }
+
+
+
+
+
 
 fun User.toResponse(): UserResponse {
     return UserResponse(

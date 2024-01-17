@@ -1,6 +1,7 @@
 package com.teamsparta.todoapplication.domain.comment.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.teamsparta.todoapplication.domain.BaseTimeEntity
 import com.teamsparta.todoapplication.domain.comment.dto.CommentResponse
 import com.teamsparta.todoapplication.domain.todo.model.Todo
 import jakarta.persistence.*
@@ -19,7 +20,7 @@ class Comment(
     @JoinColumn(name = "todo_id")
     val todo: Todo
 
-) {
+) : BaseTimeEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null

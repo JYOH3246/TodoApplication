@@ -1,7 +1,10 @@
 package com.teamsparta.todoapplication.domain.todo.service
 
 import com.teamsparta.todoapplication.domain.exception.ModelNotFoundException
-import com.teamsparta.todoapplication.domain.todo.dto.*
+import com.teamsparta.todoapplication.domain.todo.dto.AddTodoRequest
+import com.teamsparta.todoapplication.domain.todo.dto.ModifyTodoRequest
+import com.teamsparta.todoapplication.domain.todo.dto.TodoResponse
+import com.teamsparta.todoapplication.domain.todo.dto.TodoResponseForAll
 import com.teamsparta.todoapplication.domain.todo.model.Todo
 import com.teamsparta.todoapplication.domain.todo.model.toResponseForAll
 import com.teamsparta.todoapplication.domain.todo.repository.TodoRepository
@@ -15,7 +18,7 @@ class TodoServiceImpl(
     private val todoCardRepository: TodoCardRepository,
     private val todoRepository: TodoRepository
 ) : TodoService {
-    override fun getAllTodo(todoCardId: Long, request: GetTodoRequest): List<TodoResponseForAll> {
+    override fun getAllTodo(todoCardId: Long): List<TodoResponseForAll> {
         val todoCard =
             todoCardRepository.findByIdOrNull(todoCardId) ?: throw ModelNotFoundException("TodoCard", todoCardId)
         return todoCard.todos.map { it.toResponseForAll() }
@@ -38,7 +41,7 @@ class TodoServiceImpl(
             title = request.title,
             content = request.content,
             status = request.status,
-            // todocard의 인덱스
+            // todoCard의 인덱스
             todoCard = todoCard
         )
         // 글자수 제한 체크하고, 안걸리면 저장
