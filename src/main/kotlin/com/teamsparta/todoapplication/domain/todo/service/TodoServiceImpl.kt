@@ -8,6 +8,7 @@ import com.teamsparta.todoapplication.domain.todo.dto.TodoResponseForAll
 import com.teamsparta.todoapplication.domain.todo.model.Todo
 import com.teamsparta.todoapplication.domain.todo.model.toResponseForAll
 import com.teamsparta.todoapplication.domain.todo.repository.TodoRepository
+import com.teamsparta.todoapplication.domain.todocard.model.checkAddingLetterSpace
 import com.teamsparta.todoapplication.domain.todocard.repository.TodoCardRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -45,7 +46,7 @@ class TodoServiceImpl(
             todoCard = todoCard
         )
         // 글자수 제한 체크하고, 안걸리면 저장
-        todo.checkAddingLetterSpace(todoCard,todo,request)
+        todoCard.checkAddingLetterSpace(todo,request)
         todoCardRepository.save(todoCard)
         return todoRepository.save(todo).toResponseForAll()
 

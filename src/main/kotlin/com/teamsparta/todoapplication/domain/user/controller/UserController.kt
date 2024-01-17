@@ -34,7 +34,7 @@ class UserController(
     // 내 정보 보기
 
     @GetMapping("/info/{id}")
-    @PreAuthorize("#id == principal")
+    @PreAuthorize("#id == principal.id")
     fun searchMyInfo(@PathVariable id: Long): ResponseEntity<UserResponse> {
         return ResponseEntity.status(HttpStatus.OK).body(userService.searchMyInfo(id))
     }

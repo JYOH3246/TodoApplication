@@ -4,10 +4,12 @@ import com.teamsparta.todoapplication.domain.todocard.dto.AddTodoCardRequest
 import com.teamsparta.todoapplication.domain.todocard.dto.ModifyTodoCardRequest
 import com.teamsparta.todoapplication.domain.todocard.dto.TodoCardResponse
 import com.teamsparta.todoapplication.domain.todocard.service.TodoCardService
+import com.teamsparta.todoapplication.infra.security.jwt.UserPrincipal
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.status
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RequestMapping("/todoCard")
@@ -33,7 +35,6 @@ class TodoCardController(
 
     // 3. 할일카드 작성하기
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     fun addTodoCard(@RequestBody addTodoCardRequest: AddTodoCardRequest): ResponseEntity<TodoCardResponse> {
         return status(HttpStatus.CREATED).body(todoCardService.addTodoCard(addTodoCardRequest))
     }
@@ -42,6 +43,7 @@ class TodoCardController(
     @PutMapping("{todoCardId}")
     @PreAuthorize("hasRole('ADMIN')")
     fun modifyTodoCard(
+        @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @PathVariable todoCardId: Long,
         @RequestBody modifyTodoCardRequest: ModifyTodoCardRequest
     ): ResponseEntity<TodoCardResponse> {
@@ -51,7 +53,9 @@ class TodoCardController(
     //5. 할일 삭제하기
     @DeleteMapping("{todoCardId}")
     @PreAuthorize("hasRole('ADMIN')")
-    fun deleteTodoCard(@PathVariable todoCardId: Long): ResponseEntity<Unit> {
+    fun deleteTodoCard(
+        @AuthenticationPrincipal userPrincipal: UserPrincipal,
+        @PathVariable todoCardId: Long): ResponseEntity<Unit> {
         todoCardService.deleteTodoCard(todoCardId)
         return status(HttpStatus.NO_CONTENT).build()
     }

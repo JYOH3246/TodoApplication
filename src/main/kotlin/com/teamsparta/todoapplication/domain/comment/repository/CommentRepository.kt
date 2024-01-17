@@ -5,6 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface CommentRepository : JpaRepository<Comment, Long> {
     fun findByTodoIdAndId(todoId: Long, commentId: Long): Comment?
-    fun findByNameAndPassword(name: String, password: String): List<Comment>
 
 }

@@ -11,10 +11,6 @@ import jakarta.persistence.*
 class Comment(
     @Column(name = "content")
     var content: String,
-    @Column(name = "name")
-    var name: String,
-    @Column(name = "password")
-    val password: String,
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "todo_id")
@@ -31,6 +27,5 @@ fun Comment.toResponse(): CommentResponse {
     return CommentResponse(
         id = id!!,
         content = content,
-        name = name
     )
 }

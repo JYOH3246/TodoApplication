@@ -25,14 +25,13 @@ class TodoCardServiceImpl(
 
     override fun getTodoCardById(todoCardId: Long): TodoCardResponse {
         // 예외처리 : todoId에 해당하는 Todo가 존재하지 않는다면 & todocard 정의
-        val todocard =
+        val todoCard =
             todoCardRepository.findByIdOrNull(todoCardId) ?: throw ModelNotFoundException("TodoCard", todoCardId)
         // DB : Todo목록을 가져와서 이를 TodoResponse로 변환해 반환하기
-        return todocard.toResponse()
+        return todoCard.toResponse()
     }
 
     @Transactional
-
     override fun addTodoCard(request: AddTodoCardRequest): TodoCardResponse {
         // Todo를 추가해 DB에 저장 후
         return todoCardRepository.save(
@@ -44,7 +43,6 @@ class TodoCardServiceImpl(
     }
 
     @Transactional
-
     override fun modifyTodoCard(todoCardId: Long, request: ModifyTodoCardRequest): TodoCardResponse {
         // 예외처리 : todoId에 해당하는 Todo가 존재하지 않는다면 & todocard 정의
         val todoCard =

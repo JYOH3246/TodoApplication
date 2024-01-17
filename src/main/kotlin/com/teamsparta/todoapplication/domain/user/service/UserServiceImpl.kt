@@ -30,36 +30,26 @@ class UserServiceImpl(
     DB : request를 받은 이메일 패스워드 이름 별명을 저장하고 이를 response로 변환해 return
     예외사항 : 이메일 중복 / 별명 중복
      */
+        val user = User(
+            // DB에 저장할 데이터들
+            email = request.email,
+            // 비밀번호 암호화
+            password = passwordEncoder.encode(request.password),
+            name = request.name,
+            nickname = request.nickname,
+            role = when (request.role) {
+                "ADMIN" -> UserRole.ADMIN
+                "MEMBER" -> UserRole.MEMBER
+                else -> throw IllegalArgumentException("Invalid role")
+            }
+        )
         // 예외처리 : 이메일 중복 체크 -> 중복이 아니면 닉네임 체크
-        when {
-            userRepository.existsByEmail(request.email) -> {
-                throw IllegalStateException("Email is already in use")
-            }
-
-            else -> when {
-                userRepository.existsByNickname(request.nickname) -> {
-                    throw IllegalStateException("Nickname is already in use")
-                }
-            }
-        }
+        val checkEmail = userRepository.existsByEmail(request.email)
+        val checkNickname = userRepository.existsByNickname(request.nickname)
+        user.checkEmailAndNickname(checkEmail, checkNickname)
         // 기능 : DB에 정보 저장 & 일부 데이터 Response로 반환
-        return userRepository.save(
-            User(
-                // DB에 저장할 데이터들
-                email = request.email,
-                // 비밀번호 암호화
-                password = passwordEncoder.encode(request.password),
-                name = request.name,
-                nickname = request.nickname,
-                role = when (request.role) {
-                    "ADMIN" -> UserRole.ADMIN
-                    "MEMBER" -> UserRole.MEMBER
-                    else -> throw IllegalArgumentException("Invalid role")
-                }
-            )
-        ).toResponse() //response로 반환할 데이터들
+        return userRepository.save(user).toResponse() //response로 반환할 데이터들
     }
-
     override fun login(request: LoginRequest): LoginResponse {
         val user = userRepository.findByEmail(request.email)?: throw ModelNotFoundException("User", null)
         if (user.role.name != request.role ||!passwordEncoder.matches(request.password, user.password)) {

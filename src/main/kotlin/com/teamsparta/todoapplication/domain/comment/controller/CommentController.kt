@@ -2,12 +2,13 @@ package com.teamsparta.todoapplication.domain.comment.controller
 
 import com.teamsparta.todoapplication.domain.comment.dto.AddCommentRequest
 import com.teamsparta.todoapplication.domain.comment.dto.CommentResponse
-import com.teamsparta.todoapplication.domain.comment.dto.DeleteCommentRequest
 import com.teamsparta.todoapplication.domain.comment.dto.ModifyCommentRequest
 import com.teamsparta.todoapplication.domain.comment.service.CommentService
+import com.teamsparta.todoapplication.infra.security.jwt.UserPrincipal
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.status
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RequestMapping("/todoCard/{todoCardId}/todo/{todoId}/comment")
@@ -40,6 +41,7 @@ class CommentController(
 
     @PutMapping("/{commentId}")
     fun modifyComment(
+        @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @PathVariable todoCardId: Long,
         @PathVariable todoId: Long,
         @PathVariable commentId: Long,
@@ -54,11 +56,12 @@ class CommentController(
 
     @DeleteMapping("/{commentId}")
     fun deleteComment(
-        @PathVariable todoCardId: Long, @PathVariable todoId: Long,
+        @AuthenticationPrincipal userPrincipal: UserPrincipal,
+        @PathVariable todoCardId: Long,
+        @PathVariable todoId: Long,
         @PathVariable commentId: Long,
-        @RequestBody deleteCommentRequest: DeleteCommentRequest
     ): ResponseEntity<Any> {
-        commentService.deleteComment(todoId, commentId, deleteCommentRequest)
+        commentService.deleteComment(todoId, commentId)
         return status(HttpStatus.OK).body("선택하신 댓글이 삭제되었습니다.")
     }
 

@@ -5,7 +5,6 @@ import com.teamsparta.todoapplication.domain.BaseTimeEntity
 import com.teamsparta.todoapplication.domain.comment.model.Comment
 import com.teamsparta.todoapplication.domain.exception.ContentLetterException
 import com.teamsparta.todoapplication.domain.exception.TitleLetterLengthException
-import com.teamsparta.todoapplication.domain.todo.dto.AddTodoRequest
 import com.teamsparta.todoapplication.domain.todo.dto.ModifyTodoRequest
 import com.teamsparta.todoapplication.domain.todo.dto.TodoResponseForAll
 import com.teamsparta.todoapplication.domain.todocard.model.TodoCard
@@ -39,18 +38,6 @@ class Todo(
     fun removeComment(comment: Comment) {
         comments.remove(comment)
     }
-    fun checkAddingLetterSpace (todoCard:TodoCard,todo: Todo, request: AddTodoRequest) {
-        if (request.title.length in 1..200) {
-            if (request.content.length in 1..1000) {
-                todoCard.addTodo(todo)
-            } else {
-                throw ContentLetterException(request.content)
-            }
-        } else {
-            throw TitleLetterLengthException(request.title)
-        }
-    }
-
     fun checkModifyingLetterSpace(request: ModifyTodoRequest) {
         if (request.title.length in 1..200) {
             if (request.content.length in 1..1000) {

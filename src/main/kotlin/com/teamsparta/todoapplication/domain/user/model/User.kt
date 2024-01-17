@@ -27,6 +27,19 @@ class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
+    fun checkEmailAndNickname(checkEmail:Boolean, checkNickname: Boolean) {
+        when {
+            (checkEmail) -> {
+                throw IllegalStateException("Email is already in use")
+            }
+
+            else -> when {
+                (checkNickname)-> {
+                    throw IllegalStateException("Nickname is already in use")
+                }
+            }
+        }
+    }
 
 
 }
