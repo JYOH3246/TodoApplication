@@ -1,8 +1,6 @@
 package com.teamsparta.todoapplication.domain.todo.service
 
-import com.teamsparta.todoapplication.domain.exception.ContentLetterException
 import com.teamsparta.todoapplication.domain.exception.ModelNotFoundException
-import com.teamsparta.todoapplication.domain.exception.TitleLetterLengthException
 import com.teamsparta.todoapplication.domain.todo.dto.*
 import com.teamsparta.todoapplication.domain.todo.model.Todo
 import com.teamsparta.todoapplication.domain.todo.model.toResponseForAll
@@ -34,7 +32,6 @@ class TodoServiceImpl(
 
     override fun addTodo(todoCardId: Long, request: AddTodoRequest): TodoResponseForAll {
         // 예외처리 : todoCardId에 해당하는 ID가 없다면
-
         val todoCard =
             todoCardRepository.findByIdOrNull(todoCardId) ?: throw ModelNotFoundException("TodoCard", todoCardId)
         val todo = Todo(
@@ -44,17 +41,10 @@ class TodoServiceImpl(
             // todocard의 인덱스
             todoCard = todoCard
         )
-        if (request.title.length in 1..200) {
-            if (request.content.length in 1..1000) {
-                todoCard.addTodo(todo)
-                todoCardRepository.save(todoCard)
-                return todoRepository.save(todo).toResponseForAll()
-            } else {
-                throw ContentLetterException(request.content)
-            }
-        } else {
-            throw TitleLetterLengthException(request.title)
-        }
+        // 글자수 제한 체크하고, 안걸리면 저장
+        todo.checkAddingLetterSpace(todoCard,todo,request)
+        todoCardRepository.save(todoCard)
+        return todoRepository.save(todo).toResponseForAll()
 
     }
 
@@ -63,8 +53,8 @@ class TodoServiceImpl(
         // todoID가 없다면
         val todo = todoRepository.findBytodoCardIdAndId(todoCardId, todoId)
             ?: throw ModelNotFoundException("Todo", todoId)
-        // 글자수 제한 체크하기
-        todo.checkLetterSpace(request)
+        // 글자수 제한 체크하고, 안걸리면 저장
+        todo.checkModifyingLetterSpace(request)
         return todoRepository.save(todo).toResponseForAll()
 
     }

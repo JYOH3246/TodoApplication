@@ -26,7 +26,7 @@ class TodoCard(
     fun removeTodo(todo: Todo) {
         todos.remove(todo)
     }
-    fun modifyTodo(request: ModifyTodoCardRequest) {
+    fun modifyTodoCard(request: ModifyTodoCardRequest) {
         // (name, date) 정의하기 : ModifyTodoCardRequest 내 변수들로 정의
         // 요청받은 값으로 현재값을 교체하기
         name =request.name

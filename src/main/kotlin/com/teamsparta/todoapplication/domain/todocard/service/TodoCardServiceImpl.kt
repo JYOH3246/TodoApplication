@@ -47,18 +47,18 @@ class TodoCardServiceImpl(
 
     override fun modifyTodoCard(todoCardId: Long, request: ModifyTodoCardRequest): TodoCardResponse {
         // 예외처리 : todoId에 해당하는 Todo가 존재하지 않는다면 & todocard 정의
-        val todocard =
+        val todoCard =
             todoCardRepository.findByIdOrNull(todoCardId) ?: throw ModelNotFoundException("TodoCard", todoCardId)
-        todocard.modifyTodo(request)
-        return todoCardRepository.save(todocard).toResponse()
+        todoCard.modifyTodoCard(request)
+        return todoCardRepository.save(todoCard).toResponse()
     }
 
     @Transactional
     override fun deleteTodoCard(todoCardId: Long) {
         // 예외처리 : todoId에 해당하는 Todo가 존재하지 않는다면 & todocard 정의
-        val todocard =
+        val todoCard =
             todoCardRepository.findByIdOrNull(todoCardId) ?: throw ModelNotFoundException("TodoCard", todoCardId)
         // 입력받은 todoCardId를 가진 todoCard를 삭제
-        todoCardRepository.delete(todocard)
+        todoCardRepository.delete(todoCard)
     }
 }
