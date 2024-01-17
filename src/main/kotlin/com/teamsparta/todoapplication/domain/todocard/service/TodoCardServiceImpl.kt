@@ -2,7 +2,6 @@ package com.teamsparta.todoapplication.domain.todocard.service
 
 import com.teamsparta.todoapplication.domain.exception.ModelNotFoundException
 import com.teamsparta.todoapplication.domain.todocard.dto.AddTodoCardRequest
-import com.teamsparta.todoapplication.domain.todocard.dto.GetTodoCardRequest
 import com.teamsparta.todoapplication.domain.todocard.dto.ModifyTodoCardRequest
 import com.teamsparta.todoapplication.domain.todocard.dto.TodoCardResponse
 import com.teamsparta.todoapplication.domain.todocard.model.TodoCard
@@ -19,41 +18,9 @@ class TodoCardServiceImpl(
 
 ) : TodoCardService {
     override fun getAllTodoCard(
-        name: String,
-        request: GetTodoCardRequest
     ): List<TodoCardResponse> {
         // todoRepository에 존재하는 todo를 전부 출력
-        return when {
-            (request == GetTodoCardRequest.ASC) -> {
-                if (name == "All") {
-                    todoCardRepository.findAllByOrderByDateAsc().map { it.toResponse() }
-
-                } else {
-                    todoCardRepository.findByNameOrderByDateAsc(name).map { it.toResponse() }
-                }
-            }
-
-            (request == GetTodoCardRequest.DESC) -> {
-                if (name == "All") {
-                    todoCardRepository.findAllByOrderByDateDesc().map { it.toResponse() }
-
-                } else {
-                    todoCardRepository.findByNameOrderByDateDesc(name).map { it.toResponse() }
-                }
-
-            }
-
-            else -> {
-                if (name == "All") {
-                    todoCardRepository.findAll().map { it.toResponse() }
-
-                } else {
-                    todoCardRepository.findByName(name).map { it.toResponse() }
-                }
-
-            }
-
-        }
+        return todoCardRepository.findAll().map { it.toResponse() }
     }
 
     override fun getTodoCardById(todoCardId: Long): TodoCardResponse {
@@ -71,7 +38,6 @@ class TodoCardServiceImpl(
         return todoCardRepository.save(
             TodoCard(
                 name = request.name,
-                date = request.date
             )
             //저장 결과를를 TodoResponse로 변환해 반환하기
         ).toResponse()
@@ -83,11 +49,7 @@ class TodoCardServiceImpl(
         // 예외처리 : todoId에 해당하는 Todo가 존재하지 않는다면 & todocard 정의
         val todocard =
             todoCardRepository.findByIdOrNull(todoCardId) ?: throw ModelNotFoundException("TodoCard", todoCardId)
-        // (name, date) 정의하기 : ModifyTodoCardRequest 내 변수들로 정의
-        val (name, date) = request
-        // 요청받은 값으로 현재값을 교체하기
-        todocard.name = name
-        todocard.date = date
+        todocard.modifyTodo(request)
         return todoCardRepository.save(todocard).toResponse()
     }
 

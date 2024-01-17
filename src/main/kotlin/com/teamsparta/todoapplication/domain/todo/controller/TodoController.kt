@@ -2,6 +2,7 @@ package com.teamsparta.todoapplication.domain.todo.controller
 
 import com.teamsparta.todoapplication.domain.todo.dto.*
 import com.teamsparta.todoapplication.domain.todo.service.TodoService
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.status
 import org.springframework.web.bind.annotation.*
@@ -17,13 +18,13 @@ class TodoController(
         @PathVariable todoCardId: Long,
         @RequestParam getTodoRequest: GetTodoRequest,
     ): ResponseEntity<List<TodoResponseForAll>> {
-        return status(200).body(todoService.getAllTodo(todoCardId, getTodoRequest))
+        return status(HttpStatus.OK).body(todoService.getAllTodo(todoCardId, getTodoRequest))
     }
 
     // 2. 단일 작업 조회 + 댓글 목록 조회하기
     @GetMapping("/{todoId}")
     fun getTodo(@PathVariable todoCardId: Long, @PathVariable todoId: Long): ResponseEntity<TodoResponse> {
-        return status(200).body(todoService.getTodoById(todoCardId, todoId))
+        return status(HttpStatus.OK).body(todoService.getTodoById(todoCardId, todoId))
     }
 
     // 3. 할일 작성하기
@@ -31,8 +32,8 @@ class TodoController(
     fun addTodo(
         @PathVariable todoCardId: Long,
         @RequestBody addTodoRequest: AddTodoRequest
-    ): ResponseEntity<TodoResponse> {
-        return status(201).body(todoService.addTodo(todoCardId, addTodoRequest))
+    ): ResponseEntity<TodoResponseForAll> {
+        return status(HttpStatus.CREATED).body(todoService.addTodo(todoCardId, addTodoRequest))
     }
 
     // 4. 할일 수정하기
@@ -40,9 +41,9 @@ class TodoController(
     fun modifyTodo(
         @PathVariable todoCardId: Long,
         @PathVariable todoId: Long,
-        @RequestBody modifyTodoRequset: ModifyTodoRequest
-    ): ResponseEntity<TodoResponse> {
-        return status(200).body(todoService.modifyTodo(todoCardId, todoId, modifyTodoRequset))
+        @RequestBody modifyTodoRequest: ModifyTodoRequest
+    ): ResponseEntity<TodoResponseForAll> {
+        return status(HttpStatus.OK).body(todoService.modifyTodo(todoCardId, todoId, modifyTodoRequest))
     }
 
     // 5. 할일 삭제하기
@@ -50,6 +51,6 @@ class TodoController(
     fun deleteTodo(@PathVariable todoCardId: Long, @PathVariable todoId: Long)
             : ResponseEntity<Unit> {
         todoService.deleteTodo(todoCardId,todoId)
-        return status(204).build()
+        return status(HttpStatus.NO_CONTENT).build()
     }
 }

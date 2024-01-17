@@ -5,7 +5,6 @@ import com.teamsparta.todoapplication.domain.exception.ModelNotFoundException
 import com.teamsparta.todoapplication.domain.exception.TitleLetterLengthException
 import com.teamsparta.todoapplication.domain.todo.dto.*
 import com.teamsparta.todoapplication.domain.todo.model.Todo
-import com.teamsparta.todoapplication.domain.todo.model.toResponse
 import com.teamsparta.todoapplication.domain.todo.model.toResponseForAll
 import com.teamsparta.todoapplication.domain.todo.repository.TodoRepository
 import com.teamsparta.todoapplication.domain.todocard.repository.TodoCardRepository
@@ -26,30 +25,30 @@ class TodoServiceImpl(
     }
 
     override fun getTodoById(todoCardId: Long, todoId: Long): TodoResponse {
-        val todo = todoRepository.findBytodocardIdAndId(todoCardId, todoId)
+        val todo = todoRepository.findBytodoCardIdAndId(todoCardId, todoId)
             ?: throw ModelNotFoundException("Todo", todoId)
-        return todo.toResponse()
+        return todo.let { TodoResponse.from(it) }
     }
 
     @Transactional
 
-    override fun addTodo(todoCardId: Long, request: AddTodoRequest): TodoResponse {
+    override fun addTodo(todoCardId: Long, request: AddTodoRequest): TodoResponseForAll {
         // 예외처리 : todoCardId에 해당하는 ID가 없다면
 
-        val todocard =
+        val todoCard =
             todoCardRepository.findByIdOrNull(todoCardId) ?: throw ModelNotFoundException("TodoCard", todoCardId)
         val todo = Todo(
             title = request.title,
             content = request.content,
             status = request.status,
             // todocard의 인덱스
-            todocard = todocard
+            todoCard = todoCard
         )
         if (request.title.length in 1..200) {
             if (request.content.length in 1..1000) {
-                todocard.addTodo(todo)
-                todoCardRepository.save(todocard)
-                return todoRepository.save(todo).toResponse()
+                todoCard.addTodo(todo)
+                todoCardRepository.save(todoCard)
+                return todoRepository.save(todo).toResponseForAll()
             } else {
                 throw ContentLetterException(request.content)
             }
@@ -60,39 +59,28 @@ class TodoServiceImpl(
     }
 
     @Transactional
-    override fun modifyTodo(todoCardId: Long, todoId: Long, request: ModifyTodoRequest): TodoResponse {
+    override fun modifyTodo(todoCardId: Long, todoId: Long, request: ModifyTodoRequest): TodoResponseForAll {
         // todoID가 없다면
-        val todo = todoRepository.findBytodocardIdAndId(todoCardId, todoId)
+        val todo = todoRepository.findBytodoCardIdAndId(todoCardId, todoId)
             ?: throw ModelNotFoundException("Todo", todoId)
-        // 수정할 변수들을 정의하기
-        val (title, content, status: Boolean) = request
-        // 요청받은 값을 변수에 대입
-        todo.title = title
-        todo.content = content
-        todo.status = status
-        if (request.title.length in 1..200) {
-            if (request.content.length in 1..1000) {
-                return todoRepository.save(todo).toResponse()
-            } else {
-                throw ContentLetterException(request.content)
-            }
-        } else {
-            throw TitleLetterLengthException(request.title)
-        }
+        // 글자수 제한 체크하기
+        todo.checkLetterSpace(request)
+        return todoRepository.save(todo).toResponseForAll()
+
     }
 
     @Transactional
     override fun deleteTodo(todoCardId: Long, todoId: Long) {
         //예외처리 : todoCardId에 해당하는 ID가 없다면
-        val todocard =
+        val todoCard =
             todoCardRepository.findByIdOrNull(todoCardId) ?: throw ModelNotFoundException("TodoCard", todoCardId)
         // 예외처리 : todoId에 해당하는 ID가 없다면
-        val todo = todoRepository.findBytodocardIdAndId(todoCardId, todoId)
+        val todo = todoRepository.findBytodoCardIdAndId(todoCardId, todoId)
             ?: throw ModelNotFoundException("Todo", todoId)
 
         // 삭제
-        todocard.removeTodo(todo)
+        todoCard.removeTodo(todo)
         //영속성 전파
-        todoCardRepository.save(todocard)
+        todoCardRepository.save(todoCard)
     }
 }

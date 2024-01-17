@@ -1,7 +1,6 @@
 package com.teamsparta.todoapplication.domain.todocard.controller
 
 import com.teamsparta.todoapplication.domain.todocard.dto.AddTodoCardRequest
-import com.teamsparta.todoapplication.domain.todocard.dto.GetTodoCardRequest
 import com.teamsparta.todoapplication.domain.todocard.dto.ModifyTodoCardRequest
 import com.teamsparta.todoapplication.domain.todocard.dto.TodoCardResponse
 import com.teamsparta.todoapplication.domain.todocard.service.TodoCardService
@@ -21,10 +20,8 @@ class TodoCardController(
     @GetMapping
     @PreAuthorize("hasRole('ADMIN') or hasRole('MEMBER')")
     fun getTodoCardList(
-        @RequestParam name: String,
-        @RequestParam getTodoCardRequest: GetTodoCardRequest
     ): ResponseEntity<List<TodoCardResponse>> {
-        return status(HttpStatus.OK).body(todoCardService.getAllTodoCard(name, getTodoCardRequest))
+        return status(HttpStatus.OK).body(todoCardService.getAllTodoCard())
     }
 
     // 2. 단일 카드 조회

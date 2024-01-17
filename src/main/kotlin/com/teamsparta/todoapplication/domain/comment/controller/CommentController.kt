@@ -18,7 +18,8 @@ class CommentController(
     //1. 목록 조회하기
     @GetMapping
     fun getComment(
-        @PathVariable todoCardId: String,@PathVariable todoId: Long
+        @PathVariable todoCardId: Long,
+        @PathVariable todoId: Long
     ): ResponseEntity<List<CommentResponse>> {
         return status(HttpStatus.OK).body(commentService.getComment(todoId))
     }
@@ -31,7 +32,6 @@ class CommentController(
     ): ResponseEntity<CommentResponse> {
         return status(HttpStatus.CREATED).body(
             commentService.addComment(
-                todoCardId,
                 todoId,
                 addCommentRequest
             )
@@ -45,9 +45,9 @@ class CommentController(
         @PathVariable commentId: Long,
         @RequestBody modifyCommentRequest: ModifyCommentRequest
     ): ResponseEntity<CommentResponse> {
-        return status(200).body(
+        return status(HttpStatus.OK).body(
             commentService.modifyComment(
-                todoCardId, todoId, commentId, modifyCommentRequest
+                todoId, commentId, modifyCommentRequest
             )
         )
     }
@@ -58,7 +58,7 @@ class CommentController(
         @PathVariable commentId: Long,
         @RequestBody deleteCommentRequest: DeleteCommentRequest
     ): ResponseEntity<Any> {
-        commentService.deleteComment(todoCardId, todoId, commentId, deleteCommentRequest)
+        commentService.deleteComment(todoId, commentId, deleteCommentRequest)
         return status(HttpStatus.OK).body("선택하신 댓글이 삭제되었습니다.")
     }
 
