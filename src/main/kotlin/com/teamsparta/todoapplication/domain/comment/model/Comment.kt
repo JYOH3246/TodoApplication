@@ -1,6 +1,5 @@
 package com.teamsparta.todoapplication.domain.comment.model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.teamsparta.todoapplication.domain.BaseTimeEntity
 import com.teamsparta.todoapplication.domain.comment.dto.CommentResponse
 import com.teamsparta.todoapplication.domain.todo.model.Todo
@@ -12,7 +11,6 @@ class Comment(
     @Column(name = "content")
     var content: String,
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
     @JoinColumn(name = "todo_id")
     val todo: Todo
 

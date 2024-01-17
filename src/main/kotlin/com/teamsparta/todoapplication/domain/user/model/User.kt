@@ -45,10 +45,6 @@ class User(
 }
 
 
-
-
-
-
 fun User.toResponse(): UserResponse {
     return UserResponse(
         id = id!!,

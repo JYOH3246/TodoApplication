@@ -50,6 +50,7 @@ class UserServiceImpl(
         // 기능 : DB에 정보 저장 & 일부 데이터 Response로 반환
         return userRepository.save(user).toResponse() //response로 반환할 데이터들
     }
+
     override fun login(request: LoginRequest): LoginResponse {
         val user = userRepository.findByEmail(request.email)?: throw ModelNotFoundException("User", null)
         if (user.role.name != request.role ||!passwordEncoder.matches(request.password, user.password)) {

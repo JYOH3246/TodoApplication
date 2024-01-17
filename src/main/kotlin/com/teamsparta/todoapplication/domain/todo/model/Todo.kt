@@ -1,6 +1,5 @@
 package com.teamsparta.todoapplication.domain.todo.model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.teamsparta.todoapplication.domain.BaseTimeEntity
 import com.teamsparta.todoapplication.domain.comment.model.Comment
 import com.teamsparta.todoapplication.domain.exception.ContentLetterException
@@ -23,7 +22,6 @@ class Todo(
     @Column(name = "status")
     var status: Boolean = false,
     @OneToMany(mappedBy = "todo", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
-    @JsonIgnore
     var comments: MutableList<Comment> = mutableListOf()
 
 ): BaseTimeEntity()  {
