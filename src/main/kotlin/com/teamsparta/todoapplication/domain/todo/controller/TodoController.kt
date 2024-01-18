@@ -12,12 +12,13 @@ import org.springframework.http.ResponseEntity.status
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
-@RequestMapping("/todoCard/{todoCardId}/todo")
+@RequestMapping("/todoCards/{todoCardId}/todos")
 @RestController
 class TodoController(
     private val todoService: TodoService
 ) {
     // 1. 전체 목록 조회
+
     @GetMapping
     fun getTodoList(
         @PathVariable todoCardId: Long,
@@ -25,11 +26,15 @@ class TodoController(
         return status(HttpStatus.OK).body(todoService.getAllTodo(todoCardId))
     }
 
+
     // 2. 단일 작업 조회 + 댓글 목록 조회하기
     @GetMapping("/{todoId}")
-    fun getTodo(@PathVariable todoCardId: Long, @PathVariable todoId: Long): ResponseEntity<TodoResponse> {
-        return status(HttpStatus.OK).body(todoService.getTodoById(todoCardId, todoId))
+    fun getTodo(
+        @PathVariable todoCardId: Long,
+        @PathVariable todoId: Long): ResponseEntity<List<TodoResponse>> {
+        return status(HttpStatus.OK).body(todoService.getTodoWithComments(todoCardId, todoId))
     }
+
 
     // 3. 할일 작성하기
     @PostMapping

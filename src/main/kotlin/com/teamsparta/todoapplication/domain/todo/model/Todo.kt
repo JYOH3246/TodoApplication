@@ -1,12 +1,14 @@
 package com.teamsparta.todoapplication.domain.todo.model
 
-import com.teamsparta.todoapplication.domain.BaseTimeEntity
 import com.teamsparta.todoapplication.domain.comment.model.Comment
+import com.teamsparta.todoapplication.domain.comment.model.toResponse
 import com.teamsparta.todoapplication.domain.exception.ContentLetterException
 import com.teamsparta.todoapplication.domain.exception.TitleLetterLengthException
 import com.teamsparta.todoapplication.domain.todo.dto.ModifyTodoRequest
+import com.teamsparta.todoapplication.domain.todo.dto.TodoResponse
 import com.teamsparta.todoapplication.domain.todo.dto.TodoResponseForAll
 import com.teamsparta.todoapplication.domain.todocard.model.TodoCard
+import com.teamsparta.todoapplication.infra.BaseTimeEntity
 import jakarta.persistence.*
 
 @Entity
@@ -36,7 +38,7 @@ class Todo(
     fun removeComment(comment: Comment) {
         comments.remove(comment)
     }
-    fun checkModifyingLetterSpace(request: ModifyTodoRequest) {
+    fun modifyTodo(request: ModifyTodoRequest) {
         if (request.title.length in 1..200) {
             if (request.content.length in 1..1000) {
                 title = request.title
@@ -51,6 +53,16 @@ class Todo(
     }
 
 }
+fun Todo.toResponse(): TodoResponse {
+    return TodoResponse(
+        id = id!!,
+        title = title,
+        content = content,
+        status = status.toString(),
+        comments = comments.map{it.toResponse()}
+    )
+}
+
 
 
 fun Todo.toResponseForAll(): TodoResponseForAll {

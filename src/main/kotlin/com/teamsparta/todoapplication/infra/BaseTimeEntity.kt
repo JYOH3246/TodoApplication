@@ -1,4 +1,4 @@
-package com.teamsparta.todoapplication.domain
+package com.teamsparta.todoapplication.infra
 
 import jakarta.persistence.Column
 import jakarta.persistence.EntityListeners

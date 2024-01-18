@@ -6,9 +6,9 @@ import com.teamsparta.todoapplication.domain.todo.dto.ModifyTodoRequest
 import com.teamsparta.todoapplication.domain.todo.dto.TodoResponse
 import com.teamsparta.todoapplication.domain.todo.dto.TodoResponseForAll
 import com.teamsparta.todoapplication.domain.todo.model.Todo
+import com.teamsparta.todoapplication.domain.todo.model.toResponse
 import com.teamsparta.todoapplication.domain.todo.model.toResponseForAll
 import com.teamsparta.todoapplication.domain.todo.repository.TodoRepository
-import com.teamsparta.todoapplication.domain.todocard.model.checkAddingLetterSpace
 import com.teamsparta.todoapplication.domain.todocard.repository.TodoCardRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -26,10 +26,8 @@ class TodoServiceImpl(
 
     }
 
-    override fun getTodoById(todoCardId: Long, todoId: Long): TodoResponse {
-        val todo = todoRepository.findBytodoCardIdAndId(todoCardId, todoId)
-            ?: throw ModelNotFoundException("Todo", todoId)
-        return todo.let { TodoResponse.from(it) }
+    override fun getTodoWithComments(todoCardId: Long, todoId: Long): List<TodoResponse> {
+        return todoRepository.findByTodoWithComments(todoCardId,todoId).map{it.toResponse()}
     }
 
     @Transactional
@@ -46,7 +44,7 @@ class TodoServiceImpl(
             todoCard = todoCard
         )
         // 글자수 제한 체크하고, 안걸리면 저장
-        todoCard.checkAddingLetterSpace(todo,request)
+        todoCard.addTodo(todo,request)
         todoCardRepository.save(todoCard)
         return todoRepository.save(todo).toResponseForAll()
 
@@ -58,8 +56,8 @@ class TodoServiceImpl(
         val todo = todoRepository.findBytodoCardIdAndId(todoCardId, todoId)
             ?: throw ModelNotFoundException("Todo", todoId)
         // 글자수 제한 체크하고, 안걸리면 저장
-        todo.checkModifyingLetterSpace(request)
-        return todoRepository.save(todo).toResponseForAll()
+        todo.modifyTodo(request)
+        return todo.toResponseForAll()
 
     }
 
@@ -77,4 +75,6 @@ class TodoServiceImpl(
         //영속성 전파
         todoCardRepository.save(todoCard)
     }
+
+
 }

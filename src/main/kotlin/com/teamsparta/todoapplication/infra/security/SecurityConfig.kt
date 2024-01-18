@@ -25,6 +25,7 @@ class SecurityConfig(
             .httpBasic { it.disable() }
             .formLogin { it.disable() }
             .csrf { it.disable() }
+
             .authorizeHttpRequests {
                 it.requestMatchers(AntPathRequestMatcher("/login")).permitAll()
                 it.requestMatchers(AntPathRequestMatcher("/signup")).permitAll()

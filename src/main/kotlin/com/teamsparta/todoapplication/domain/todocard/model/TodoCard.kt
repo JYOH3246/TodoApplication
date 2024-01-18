@@ -1,12 +1,12 @@
 package com.teamsparta.todoapplication.domain.todocard.model
 
-import com.teamsparta.todoapplication.domain.BaseTimeEntity
 import com.teamsparta.todoapplication.domain.exception.ContentLetterException
 import com.teamsparta.todoapplication.domain.exception.TitleLetterLengthException
 import com.teamsparta.todoapplication.domain.todo.dto.AddTodoRequest
 import com.teamsparta.todoapplication.domain.todo.model.Todo
 import com.teamsparta.todoapplication.domain.todocard.dto.ModifyTodoCardRequest
 import com.teamsparta.todoapplication.domain.todocard.dto.TodoCardResponse
+import com.teamsparta.todoapplication.infra.BaseTimeEntity
 import jakarta.persistence.*
 
 @Entity
@@ -22,8 +22,16 @@ class TodoCard(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
-    fun addTodo(todo: Todo) {
-        todos.add(todo)
+    fun addTodo(todo: Todo, request: AddTodoRequest) {
+        if (request.title.length in 1..200) {
+            if (request.content.length in 1..1000) {
+                todos.add(todo)
+            } else {
+                throw ContentLetterException(request.content)
+            }
+        } else {
+            throw TitleLetterLengthException(request.title)
+        }
     }
 
     fun removeTodo(todo: Todo) {
@@ -45,16 +53,5 @@ fun TodoCard.toResponse(): TodoCardResponse {
     )
 }
 
-fun TodoCard.checkAddingLetterSpace(todo: Todo, request: AddTodoRequest) {
-    if (request.title.length in 1..200) {
-        if (request.content.length in 1..1000) {
-            addTodo(todo)
-        } else {
-            throw ContentLetterException(request.content)
-        }
-    } else {
-        throw TitleLetterLengthException(request.title)
-    }
-}
 
 

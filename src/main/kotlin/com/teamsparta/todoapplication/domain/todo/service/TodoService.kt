@@ -8,9 +8,9 @@ import com.teamsparta.todoapplication.domain.todo.dto.TodoResponseForAll
 
 interface TodoService {
     fun getAllTodo(todoCardId: Long): List<TodoResponseForAll>
-    fun getTodoById(todoCardId: Long, todoId: Long): TodoResponse
     fun addTodo(todoCardId: Long, request: AddTodoRequest): TodoResponseForAll
     fun modifyTodo(todoCardId: Long, todoId: Long, request: ModifyTodoRequest): TodoResponseForAll
     fun deleteTodo(todoCardId: Long, todoId: Long)
+    fun getTodoWithComments(todoCardId: Long, todoId:Long) : List<TodoResponse>
 
 }

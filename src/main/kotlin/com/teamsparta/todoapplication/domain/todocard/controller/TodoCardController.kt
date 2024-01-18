@@ -12,7 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
-@RequestMapping("/todoCard")
+@RequestMapping("/todoCards")
 @RestController
 class TodoCardController(
     // 생성자만 주입했어도, Bean으로 등록했기 때문에 스프링이 알아서 인스턴스화, 조립시켜 준다.

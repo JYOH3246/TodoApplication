@@ -1,8 +1,8 @@
 package com.teamsparta.todoapplication.domain.comment.model
 
-import com.teamsparta.todoapplication.domain.BaseTimeEntity
 import com.teamsparta.todoapplication.domain.comment.dto.CommentResponse
 import com.teamsparta.todoapplication.domain.todo.model.Todo
+import com.teamsparta.todoapplication.infra.BaseTimeEntity
 import jakarta.persistence.*
 
 @Entity

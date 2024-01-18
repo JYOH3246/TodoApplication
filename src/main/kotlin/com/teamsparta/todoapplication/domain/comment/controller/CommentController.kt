@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity.status
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
-@RequestMapping("/todoCard/{todoCardId}/todo/{todoId}/comment")
+@RequestMapping("/todoCards/{todoCardId}/todos/{todoId}/comments")
 @RestController
 class CommentController(
     private val commentService: CommentService
