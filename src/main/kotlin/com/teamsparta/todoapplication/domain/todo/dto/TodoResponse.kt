@@ -7,5 +7,6 @@ data class TodoResponse(
     val title: String,
     val content: String,
     val status: String,
-    val comments: List<CommentResponse>
+    val comments: List<CommentResponse>,
+    val email: String,
 )

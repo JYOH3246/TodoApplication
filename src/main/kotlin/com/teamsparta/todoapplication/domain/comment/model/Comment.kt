@@ -2,7 +2,6 @@ package com.teamsparta.todoapplication.domain.comment.model
 
 import com.teamsparta.todoapplication.domain.comment.dto.CommentResponse
 import com.teamsparta.todoapplication.domain.todo.model.Todo
-import com.teamsparta.todoapplication.infra.jpaaudit.BaseTimeEntity
 import com.teamsparta.todoapplication.infra.jpaaudit.BaseUserEntity
 import jakarta.persistence.*
 
@@ -26,5 +25,6 @@ fun Comment.toResponse(): CommentResponse {
     return CommentResponse(
         id = id!!,
         content = content,
+        email = createdMail
     )
 }

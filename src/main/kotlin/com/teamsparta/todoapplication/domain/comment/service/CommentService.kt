@@ -7,6 +7,7 @@ import com.teamsparta.todoapplication.domain.comment.dto.ModifyCommentRequest
 
 interface CommentService {
     fun getComment(todoId: Long): List<CommentResponse>
+    fun getCommentById(commentId: Long): CommentResponse
     fun addComment(todoId: Long, request: AddCommentRequest): CommentResponse
     fun modifyComment(
         todoId: Long,

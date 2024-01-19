@@ -38,6 +38,7 @@ class GlobalExceptionHandler { // 이 클래스는 전역적으로 예외를 핸
         //400 Bad Request
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ErrorResponse(message = e.message))
     }
+
     @ExceptionHandler(InvalidInputException::class)
     fun handleInvalidInputException(e: InvalidInputException): ResponseEntity<ErrorResponse> {
         //400 Bad Request

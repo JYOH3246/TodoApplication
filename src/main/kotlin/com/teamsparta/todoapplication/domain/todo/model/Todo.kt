@@ -26,7 +26,7 @@ class Todo(
     @OneToMany(mappedBy = "todo", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
     var comments: MutableList<Comment> = mutableListOf()
 
-): BaseUserEntity()  {
+) : BaseUserEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
@@ -38,6 +38,7 @@ class Todo(
     fun removeComment(comment: Comment) {
         comments.remove(comment)
     }
+
     fun modifyTodo(request: ModifyTodoRequest) {
         if (request.title.length in 1..200) {
             if (request.content.length in 1..1000) {
@@ -53,16 +54,18 @@ class Todo(
     }
 
 }
+
 fun Todo.toResponse(): TodoResponse {
     return TodoResponse(
         id = id!!,
         title = title,
         content = content,
         status = status.toString(),
-        comments = comments.map{it.toResponse()}
+        comments = comments.map { it.toResponse() },
+        email = createdMail
+
     )
 }
-
 
 
 fun Todo.toResponseForAll(): TodoResponseForAll {
@@ -70,7 +73,7 @@ fun Todo.toResponseForAll(): TodoResponseForAll {
         id = id!!,
         title = title,
         content = content,
-        status = status.toString()
+        status = status.toString(),
     )
 }
 

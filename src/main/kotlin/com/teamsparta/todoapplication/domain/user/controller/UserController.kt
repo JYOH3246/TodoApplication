@@ -8,7 +8,6 @@ import com.teamsparta.todoapplication.domain.user.service.UserService
 import com.teamsparta.todoapplication.infra.security.jwt.UserPrincipal
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
@@ -36,10 +35,10 @@ class UserController(
     // 내 정보 보기
 
     @GetMapping("/info/{id}")
-    @PreAuthorize("#id == #userPrincipal.id")
     fun searchMyInfo(
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
-        @PathVariable id: Long): ResponseEntity<UserResponse> {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.searchMyInfo(id))
+        @PathVariable id: Long
+    ): ResponseEntity<UserResponse> {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.searchMyInfo(userPrincipal.id))
     }
 }
