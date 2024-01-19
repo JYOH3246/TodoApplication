@@ -7,7 +7,7 @@ import com.teamsparta.todoapplication.domain.user.dto.UserResponse
 
 interface UserService {
     fun signUp(request: SignUpRequest): UserResponse
-    fun login(request:LoginRequest) : LoginResponse
+    fun login(request: LoginRequest): LoginResponse
     fun searchMyInfo(id: Long): UserResponse
 
 }

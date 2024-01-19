@@ -5,4 +5,5 @@ data class TodoResponseForAll(
     val title: String,
     val content: String,
     val status: String,
-)
+
+    )

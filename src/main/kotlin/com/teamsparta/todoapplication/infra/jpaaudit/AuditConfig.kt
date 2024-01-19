@@ -11,7 +11,7 @@ import java.util.*
 class AuditConfig {
     @Bean
     fun auditorAware() = AuditorAware {
-        val userPrincipal : UserPrincipal
+        val userPrincipal: UserPrincipal
         Optional.ofNullable(SecurityContextHolder.getContext())
             .map { it.authentication }
             .filter { it.isAuthenticated && !it.name.equals("anonymousUser") }

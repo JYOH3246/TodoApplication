@@ -17,6 +17,7 @@ class TodoCard(
     @OneToMany(mappedBy = "todoCard", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
     var todos: MutableList<Todo> = mutableListOf()
 
+
 ) : BaseUserEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,8 +51,21 @@ fun TodoCard.toResponse(): TodoCardResponse {
     return TodoCardResponse(
         id = id!!,
         name = name,
+        email = createdMail
     )
 }
+/*
+@MappedSuperclass
+@EntityListeners(AuditingEntityListener::class)
+abstract class BaseUserEntity : BaseTimeEntity() {
+    @CreatedBy
+    @Column(nullable = false, updatable = true)
+    protected var createdMail : String? = null
 
+    @LastModifiedBy
+    @Column(nullable = false, updatable = true)
+    protected var modifiedMail : String? = null
+}
+ */
 
 

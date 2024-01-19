@@ -12,9 +12,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener
 abstract class BaseUserEntity : BaseTimeEntity() {
     @CreatedBy
     @Column(nullable = false, updatable = true)
-    protected var createdMail : String? = null
+    var createdMail: String = "base@base.com"
 
     @LastModifiedBy
     @Column(nullable = false, updatable = true)
-    protected var modifiedMail : String? = null
+    var modifiedMail: String = "base@base.com"
 }

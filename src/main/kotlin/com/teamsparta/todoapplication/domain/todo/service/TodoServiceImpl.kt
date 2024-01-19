@@ -27,7 +27,7 @@ class TodoServiceImpl(
     }
 
     override fun getTodoWithComments(todoCardId: Long, todoId: Long): List<TodoResponse> {
-        return todoRepository.findByTodoWithComments(todoCardId,todoId).map{it.toResponse()}
+        return todoRepository.findByTodoWithComments(todoCardId, todoId).map { it.toResponse() }
     }
 
     @Transactional
@@ -44,21 +44,28 @@ class TodoServiceImpl(
             todoCard = todoCard
         )
         // 글자수 제한 체크하고, 안걸리면 저장
-        todoCard.addTodo(todo,request)
+        todoCard.addTodo(todo, request)
         todoCardRepository.save(todoCard)
         return todoRepository.save(todo).toResponseForAll()
 
     }
 
     @Transactional
-    override fun modifyTodo(todoCardId: Long, todoId: Long, request: ModifyTodoRequest): TodoResponseForAll {
+    override fun modifyTodo(todoCardId: Long, todoId: Long, request: ModifyTodoRequest): TodoResponse {
         // todoID가 없다면
         val todo = todoRepository.findBytodoCardIdAndId(todoCardId, todoId)
             ?: throw ModelNotFoundException("Todo", todoId)
         // 글자수 제한 체크하고, 안걸리면 저장
         todo.modifyTodo(request)
-        return todo.toResponseForAll()
+        return todo.toResponse()
 
+    }
+
+    override fun getTodo(todoCardId: Long, todoId: Long): TodoResponse {
+        val todoCard =
+            todoCardRepository.findByIdOrNull(todoCardId) ?: throw ModelNotFoundException("TodoCard", todoCardId)
+        val todo = todoRepository.findByIdOrNull(todoId) ?: throw ModelNotFoundException("TodoCard", todoCardId)
+        return todo.toResponse()
     }
 
     @Transactional

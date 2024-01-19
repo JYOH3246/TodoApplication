@@ -35,7 +35,7 @@ class SecurityConfig(
             }
             // 기존 UsernamePasswordAuthenticationFilter 가 존재하던 자리에 JwtAuthenticationFilter 적용
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
-            .exceptionHandling{
+            .exceptionHandling {
                 it.authenticationEntryPoint(authenticationEntrypoint)
                 it.accessDeniedHandler(accessDeniedHandler)
             }

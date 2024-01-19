@@ -52,11 +52,11 @@ class UserServiceImpl(
     }
 
     override fun login(request: LoginRequest): LoginResponse {
-        val user = userRepository.findByEmail(request.email)?: throw ModelNotFoundException("User", null)
+        val user = userRepository.findByEmail(request.email) ?: throw ModelNotFoundException("User", null)
         if (!passwordEncoder.matches(request.password, user.password)) {
             throw InvalidCredentialException()
         }
-        return LoginResponse (
+        return LoginResponse(
             accessToken = jwtPlugin.generateAccessToken(
                 subject = user.id.toString(),
                 email = user.email,
@@ -65,9 +65,10 @@ class UserServiceImpl(
             )
         )
     }
+
     // 내 정보 조회하기
     override fun searchMyInfo(id: Long): UserResponse {
-        val user : User = userRepository.findByIdOrNull(id) ?:throw InvalidInputException(id)
+        val user: User = userRepository.findByIdOrNull(id) ?: throw InvalidInputException(id)
         return user.toResponse()
     }
 }

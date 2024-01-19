@@ -31,6 +31,11 @@ class CommentServiceImpl(
 
     }
 
+    override fun getCommentById(commentId: Long): CommentResponse {
+        val comment = commentRepository.findByIdOrNull(commentId) ?: throw ModelNotFoundException("comment", commentId)
+        return comment.toResponse()
+    }
+
     override fun getComment(todoId: Long): List<CommentResponse> {
         val todo = todoRepository.findByIdOrNull(todoId) ?: throw ModelNotFoundException("Todo", todoId)
 
@@ -55,7 +60,7 @@ class CommentServiceImpl(
         todoId: Long,
         commentId: Long,
     ) {
-        val todo = todoRepository.findBytodoCardIdAndId(todoId,commentId)
+        val todo = todoRepository.findBytodoCardIdAndId(todoId, commentId)
             ?: throw ModelNotFoundException("Todo", todoId)
         val comment = commentRepository.findByTodoIdAndId(todoId, commentId)
             ?: throw ModelNotFoundException("Comment", commentId)

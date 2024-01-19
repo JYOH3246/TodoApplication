@@ -30,12 +30,12 @@ class JwtAuthenticationFilter(
                 .onSuccess {
                     // 토큰으로부터 정보를 획득할 수 있다.
                     val userId = it.payload.subject.toLong()
-                    val email = it.payload.get("email",String::class.java)
-                    val role = it.payload.get("role",String::class.java)
+                    val email = it.payload.get("email", String::class.java)
+                    val role = it.payload.get("role", String::class.java)
 
                     val principal = UserPrincipal(
                         id = userId,
-                        email =email,
+                        email = email,
                         roles = setOf(role)
                     )
                     // Authetication 구현체 SecurityContext에 저장
@@ -49,6 +49,7 @@ class JwtAuthenticationFilter(
         // filterChain 계속 진행 : 검증이 되지 않았다면 filterChain을 계속 진행하여 다음 필터들이 동작할 수 있도록 한다.
         filterChain.doFilter(request, response)
     }
+
     private fun HttpServletRequest.getBearerToken(): String? {
         val headerValue = this.getHeader(HttpHeaders.AUTHORIZATION) ?: return null
         return BEARER_PATTERN.find(headerValue)?.groupValues?.get(1)

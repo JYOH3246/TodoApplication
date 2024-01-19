@@ -48,16 +48,24 @@ class TodoCardController(
         @PathVariable todoCardId: Long,
         @RequestBody modifyTodoCardRequest: ModifyTodoCardRequest
     ): ResponseEntity<TodoCardResponse> {
-        return status(HttpStatus.OK).body(todoCardService.modifyTodoCard(todoCardId, modifyTodoCardRequest))
+        val todoCard = todoCardService.getTodoCardById(todoCardId)
+        if (todoCard.email == userPrincipal.email) {
+            return status(HttpStatus.OK).body(todoCardService.modifyTodoCard(todoCardId, modifyTodoCardRequest))
+        } else throw IllegalStateException("접근 불가")
     }
 
     //5. 할일 삭제하기
     @DeleteMapping("{todoCardId}")
-    @PreAuthorize("hasRole('ADMIN') or #userPrincipal == principal")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MEMBER')")
     fun deleteTodoCard(
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
-        @PathVariable todoCardId: Long): ResponseEntity<Unit> {
-        todoCardService.deleteTodoCard(todoCardId)
-        return status(HttpStatus.NO_CONTENT).build()
+        @PathVariable todoCardId: Long
+    ): ResponseEntity<Unit> {
+        val todoCard = todoCardService.getTodoCardById(todoCardId)
+        if (todoCard.email == userPrincipal.email) {
+            todoCardService.deleteTodoCard(todoCardId)
+            return status(HttpStatus.NO_CONTENT).build()
+        } else throw IllegalStateException("접근 불가")
+
     }
 }

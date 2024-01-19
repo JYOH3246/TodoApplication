@@ -4,6 +4,7 @@ import com.teamsparta.todoapplication.domain.comment.dto.AddCommentRequest
 import com.teamsparta.todoapplication.domain.comment.dto.CommentResponse
 import com.teamsparta.todoapplication.domain.comment.dto.ModifyCommentRequest
 import com.teamsparta.todoapplication.domain.comment.service.CommentService
+import com.teamsparta.todoapplication.domain.todo.service.TodoService
 import com.teamsparta.todoapplication.infra.security.jwt.UserPrincipal
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -15,7 +16,8 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/todoCards/{todoCardId}/todos/{todoId}/comments")
 @RestController
 class CommentController(
-    private val commentService: CommentService
+    private val commentService: CommentService,
+    private val todoService: TodoService
 ) {
     //1. 목록 조회하기
     @GetMapping
@@ -28,20 +30,25 @@ class CommentController(
 
     @PostMapping
     fun addComment(
+        @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @PathVariable todoCardId: Long,
         @PathVariable todoId: Long,
         @RequestBody addCommentRequest: AddCommentRequest
     ): ResponseEntity<CommentResponse> {
-        return status(HttpStatus.CREATED).body(
-            commentService.addComment(
-                todoId,
-                addCommentRequest
+        val todo = todoService.getTodo(todoCardId, todoId)
+        if (todo.email == userPrincipal.email) {
+            return status(HttpStatus.CREATED).body(
+                commentService.addComment(
+                    todoId,
+                    addCommentRequest
+                )
             )
-        )
+        } else throw IllegalStateException("접근 불가")
+
     }
 
     @PutMapping("/{commentId}")
-    @PreAuthorize("hasRole('ADMIN') or #userPrincipal == principal")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MEMBER')")
     fun modifyComment(
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @PathVariable todoCardId: Long,
@@ -49,23 +56,31 @@ class CommentController(
         @PathVariable commentId: Long,
         @RequestBody modifyCommentRequest: ModifyCommentRequest
     ): ResponseEntity<CommentResponse> {
-        return status(HttpStatus.OK).body(
-            commentService.modifyComment(
-                todoId, commentId, modifyCommentRequest
+        val comment = commentService.getCommentById(commentId)
+        if (comment.email == userPrincipal.email) {
+            return status(HttpStatus.OK).body(
+                commentService.modifyComment(
+                    todoId, commentId, modifyCommentRequest
+                )
             )
-        )
+        } else throw IllegalStateException("접근 불가")
+
     }
 
     @DeleteMapping("/{commentId}")
-    @PreAuthorize("hasRole('ADMIN') or #userPrincipal == principal")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MEMBER')")
     fun deleteComment(
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @PathVariable todoCardId: Long,
         @PathVariable todoId: Long,
         @PathVariable commentId: Long,
     ): ResponseEntity<Any> {
-        commentService.deleteComment(todoId, commentId)
-        return status(HttpStatus.OK).body("선택하신 댓글이 삭제되었습니다.")
+        val comment = commentService.getCommentById(commentId)
+        if (comment.email == userPrincipal.email) {
+            commentService.deleteComment(todoId, commentId)
+            return status(HttpStatus.OK).body("선택하신 댓글이 삭제되었습니다.")
+        } else throw IllegalStateException("접근 불가")
+
     }
 
 
