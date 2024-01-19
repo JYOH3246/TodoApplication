@@ -1,13 +1,16 @@
 package com.teamsparta.todoapplication.domain.user.controller
 
+import com.teamsparta.todoapplication.domain.user.dto.LoginRequest
+import com.teamsparta.todoapplication.domain.user.dto.LoginResponse
 import com.teamsparta.todoapplication.domain.user.dto.SignUpRequest
 import com.teamsparta.todoapplication.domain.user.dto.UserResponse
 import com.teamsparta.todoapplication.domain.user.service.UserService
+import com.teamsparta.todoapplication.infra.security.jwt.UserPrincipal
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class UserController(
@@ -23,5 +26,20 @@ class UserController(
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(userService.signUp(signUpRequest))
+    }
+
+    @PostMapping("/login")
+    fun signIn(@RequestBody loginRequest: LoginRequest): ResponseEntity<LoginResponse> {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.login(loginRequest))
+    }
+
+    // 내 정보 보기
+
+    @GetMapping("/info/{id}")
+    @PreAuthorize("#id == #userPrincipal.id")
+    fun searchMyInfo(
+        @AuthenticationPrincipal userPrincipal: UserPrincipal,
+        @PathVariable id: Long): ResponseEntity<UserResponse> {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.searchMyInfo(id))
     }
 }
