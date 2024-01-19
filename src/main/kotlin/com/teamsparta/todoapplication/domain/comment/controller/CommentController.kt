@@ -8,6 +8,7 @@ import com.teamsparta.todoapplication.infra.security.jwt.UserPrincipal
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.status
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
@@ -40,6 +41,7 @@ class CommentController(
     }
 
     @PutMapping("/{commentId}")
+    @PreAuthorize("hasRole('ADMIN') or #userPrincipal == principal")
     fun modifyComment(
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @PathVariable todoCardId: Long,
@@ -55,6 +57,7 @@ class CommentController(
     }
 
     @DeleteMapping("/{commentId}")
+    @PreAuthorize("hasRole('ADMIN') or #userPrincipal == principal")
     fun deleteComment(
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @PathVariable todoCardId: Long,

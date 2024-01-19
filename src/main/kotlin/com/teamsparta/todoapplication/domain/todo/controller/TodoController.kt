@@ -9,6 +9,7 @@ import com.teamsparta.todoapplication.infra.security.jwt.UserPrincipal
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.status
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
@@ -47,6 +48,7 @@ class TodoController(
 
     // 4. 할일 수정하기
     @PutMapping("/{todoId}")
+    @PreAuthorize("hasRole('ADMIN') or #userPrincipal == principal")
     fun modifyTodo(
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @PathVariable todoCardId: Long,
@@ -58,6 +60,7 @@ class TodoController(
 
     // 5. 할일 삭제하기
     @DeleteMapping("/{todoId}")
+    @PreAuthorize("hasRole('ADMIN') or #userPrincipal == principal")
     fun deleteTodo(
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @PathVariable todoCardId: Long,

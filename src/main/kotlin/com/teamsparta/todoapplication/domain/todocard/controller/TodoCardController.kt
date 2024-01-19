@@ -35,13 +35,14 @@ class TodoCardController(
 
     // 3. 할일카드 작성하기
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MEMBER')")
     fun addTodoCard(@RequestBody addTodoCardRequest: AddTodoCardRequest): ResponseEntity<TodoCardResponse> {
         return status(HttpStatus.CREATED).body(todoCardService.addTodoCard(addTodoCardRequest))
     }
 
     // 4. 할일카드 수정하기
     @PutMapping("{todoCardId}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or #userPrincipal == principal")
     fun modifyTodoCard(
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @PathVariable todoCardId: Long,
@@ -52,7 +53,7 @@ class TodoCardController(
 
     //5. 할일 삭제하기
     @DeleteMapping("{todoCardId}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or #userPrincipal == principal")
     fun deleteTodoCard(
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @PathVariable todoCardId: Long): ResponseEntity<Unit> {
