@@ -1,75 +1,62 @@
 package com.teamsparta.todoapplication.domain.todo.model
 
-import com.teamsparta.todoapplication.domain.comment.model.Comment
-import com.teamsparta.todoapplication.domain.comment.model.toResponse
-import com.teamsparta.todoapplication.domain.exception.ContentLetterException
-import com.teamsparta.todoapplication.domain.exception.TitleLetterLengthException
-import com.teamsparta.todoapplication.domain.todo.dto.ModifyTodoRequest
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.teamsparta.todoapplication.domain.comment.model.TodoComment
 import com.teamsparta.todoapplication.domain.todo.dto.TodoResponse
 import com.teamsparta.todoapplication.domain.todo.dto.TodoResponseForAll
 import com.teamsparta.todoapplication.domain.todocard.model.TodoCard
-import com.teamsparta.todoapplication.infra.jpaaudit.BaseUserEntity
 import jakarta.persistence.*
+import java.util.*
 
 @Entity
-@Table(name = "todos")
+@Table(name = "todo")
 class Todo(
     @Column(name = "title")
     var title: String,
     @Column(name = "content")
     var content: String,
+    @Column(name = "date")
+    var date: Date,
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "todoCard_id")
-    val todoCard: TodoCard,
+    @JoinColumn(name = "todocard_id")
+    val todocard: TodoCard,
     @Column(name = "status")
     var status: Boolean = false,
     @OneToMany(mappedBy = "todo", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
-    var comments: MutableList<Comment> = mutableListOf()
+    @JsonIgnore
+    var todoComments: MutableList<TodoComment> = mutableListOf()
 
-): BaseUserEntity()  {
+) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
-    fun addComment(comment: Comment) {
-        comments.add(comment)
+    fun addTodoComment(todoComment: TodoComment) {
+        todoComments.add(todoComment)
     }
 
-    fun removeComment(comment: Comment) {
-        comments.remove(comment)
-    }
-    fun modifyTodo(request: ModifyTodoRequest) {
-        if (request.title.length in 1..200) {
-            if (request.content.length in 1..1000) {
-                title = request.title
-                content = request.content
-                status = request.status
-            } else {
-                throw ContentLetterException(request.content)
-            }
-        } else {
-            throw TitleLetterLengthException(request.title)
-        }
+    fun removeTodoComment(todoComment: TodoComment) {
+        todoComments.remove(todoComment)
     }
 
 }
+
 fun Todo.toResponse(): TodoResponse {
     return TodoResponse(
         id = id!!,
         title = title,
         content = content,
+        date = date,
         status = status.toString(),
-        comments = comments.map{it.toResponse()}
+        todoComments = todoComments
     )
 }
-
-
-
 fun Todo.toResponseForAll(): TodoResponseForAll {
     return TodoResponseForAll(
         id = id!!,
         title = title,
         content = content,
+        date = date,
         status = status.toString()
     )
 }
