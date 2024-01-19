@@ -4,7 +4,7 @@ Todo Application
 
 ## Todo Application Version 1.0
 > * 담당자 : 오재영
-> * 개발 기간 : 2023.12.20 ~ 2023.12.29
+> * 개발 기간 : 2023.12.20 ~ 2024.01.05
 
 
 ## 프로젝트 소개
@@ -33,8 +33,8 @@ $ cd todoApplication
 </div>
 
 ## API Documents
-<img src ="./img/API lv1.png" >
+<img src ="./img/API Document.png" >
 
 ## ERD
-<img src ="./img/ERD lv1.png" >
+<img src ="./img/ERD.png" >
 
