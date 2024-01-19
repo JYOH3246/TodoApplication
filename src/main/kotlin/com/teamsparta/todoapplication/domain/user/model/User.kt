@@ -1,7 +1,6 @@
 package com.teamsparta.todoapplication.domain.user.model
 
 import com.teamsparta.todoapplication.domain.user.dto.UserResponse
-import com.teamsparta.todoapplication.infra.jpaaudit.BaseTimeEntity
 import jakarta.persistence.*
 
 @Entity
@@ -18,39 +17,17 @@ class User(
 
     @Column(name = "nickname")
     val nickname: String,
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role")
-    val role: UserRole,
 
-
-    ) : BaseTimeEntity() {
+    ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
-    fun checkEmailAndNickname(checkEmail:Boolean, checkNickname: Boolean) {
-        when {
-            (checkEmail) -> {
-                throw IllegalStateException("Email is already in use")
-            }
-
-            else -> when {
-                (checkNickname)-> {
-                    throw IllegalStateException("Nickname is already in use")
-                }
-            }
-        }
-    }
-
-
 }
-
 
 fun User.toResponse(): UserResponse {
     return UserResponse(
         id = id!!,
         nickname = nickname,
-        email = email,
-        role = role.name
-
+        email = email
     )
 }
