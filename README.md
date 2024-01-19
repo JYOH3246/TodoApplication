@@ -1,3 +1,4 @@
+
 Todo Application
 =====
 
@@ -30,4 +31,10 @@ $ cd todoApplication
   <img src="https://img.shields.io/badge/IntelliJ-000000?style=for-the-badge&logo=Intellijidea&logoColor=white">
   <br>
 </div>
-_____
+
+## API Documents
+<img src ="./img/API lv1.png" >
+
+## ERD
+<img src ="./img/ERD lv1.png" >
+
