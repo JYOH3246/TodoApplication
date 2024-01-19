@@ -1,9 +1,10 @@
 package com.teamsparta.todoapplication.domain.todo.service
 
-import com.teamsparta.todoapplication.domain.exception.ContentLetterException
 import com.teamsparta.todoapplication.domain.exception.ModelNotFoundException
-import com.teamsparta.todoapplication.domain.exception.TitleLetterLengthException
-import com.teamsparta.todoapplication.domain.todo.dto.*
+import com.teamsparta.todoapplication.domain.todo.dto.AddTodoRequest
+import com.teamsparta.todoapplication.domain.todo.dto.ModifyTodoRequest
+import com.teamsparta.todoapplication.domain.todo.dto.TodoResponse
+import com.teamsparta.todoapplication.domain.todo.dto.TodoResponseForAll
 import com.teamsparta.todoapplication.domain.todo.model.Todo
 import com.teamsparta.todoapplication.domain.todo.model.toResponse
 import com.teamsparta.todoapplication.domain.todo.model.toResponseForAll
@@ -18,87 +19,69 @@ class TodoServiceImpl(
     private val todoCardRepository: TodoCardRepository,
     private val todoRepository: TodoRepository
 ) : TodoService {
-    override fun getAllTodo(todoCardId: Long, request: GetTodoRequest): List<TodoResponseForAll> {
+    override fun getAllTodo(todoCardId: Long): List<TodoResponseForAll> {
         val todoCard =
             todoCardRepository.findByIdOrNull(todoCardId) ?: throw ModelNotFoundException("TodoCard", todoCardId)
-        when {
-            (request == GetTodoRequest.ASC) -> todoCard.todos = todoRepository.findAllByOrderByDateAsc()
-            (request == GetTodoRequest.DESC) -> todoCard.todos = todoRepository.findAllByOrderByDateDesc()
-        }
         return todoCard.todos.map { it.toResponseForAll() }
 
     }
 
-    override fun getTodoById(todoCardId: Long, todoId: Long): TodoResponse {
-        val todo = todoRepository.findBytodocardIdAndId(todoCardId, todoId)
-            ?: throw ModelNotFoundException("Todo", todoId)
-        return todo.toResponse()
+    override fun getTodoWithComments(todoCardId: Long, todoId: Long): List<TodoResponse> {
+        return todoRepository.findByTodoWithComments(todoCardId, todoId).map { it.toResponse() }
     }
 
     @Transactional
 
-    override fun addTodo(todoCardId: Long, request: AddTodoRequest): TodoResponse {
+    override fun addTodo(todoCardId: Long, request: AddTodoRequest): TodoResponseForAll {
         // 예외처리 : todoCardId에 해당하는 ID가 없다면
-
-        val todocard =
+        val todoCard =
             todoCardRepository.findByIdOrNull(todoCardId) ?: throw ModelNotFoundException("TodoCard", todoCardId)
         val todo = Todo(
             title = request.title,
             content = request.content,
-            date = request.date,
             status = request.status,
-            // todocard의 인덱스
-            todocard = todocard
+            // todoCard의 인덱스
+            todoCard = todoCard
         )
-        if (request.title.length in 1..200) {
-            if (request.content.length in 1..1000) {
-                todocard.addTodo(todo)
-                todoCardRepository.save(todocard)
-                return todoRepository.save(todo).toResponse()
-            } else {
-                throw ContentLetterException(request.content)
-            }
-        } else {
-            throw TitleLetterLengthException(request.title)
-        }
+        // 글자수 제한 체크하고, 안걸리면 저장
+        todoCard.addTodo(todo, request)
+        todoCardRepository.save(todoCard)
+        return todoRepository.save(todo).toResponseForAll()
 
     }
 
     @Transactional
     override fun modifyTodo(todoCardId: Long, todoId: Long, request: ModifyTodoRequest): TodoResponse {
         // todoID가 없다면
-        val todo = todoRepository.findBytodocardIdAndId(todoCardId, todoId)
+        val todo = todoRepository.findBytodoCardIdAndId(todoCardId, todoId)
             ?: throw ModelNotFoundException("Todo", todoId)
-        // 수정할 변수들을 정의하기
-        val (title, content, date, status: Boolean) = request
-        // 요청받은 값을 변수에 대입
-        todo.title = title
-        todo.content = content
-        todo.date = date
-        todo.status = status
-        if (request.title.length in 1..200) {
-            if (request.content.length in 1..1000) {
-                return todoRepository.save(todo).toResponse()
-            } else {
-                throw ContentLetterException(request.content)
-            }
-        } else {
-            throw TitleLetterLengthException(request.title)
-        }
+        // 글자수 제한 체크하고, 안걸리면 저장
+        todo.modifyTodo(request)
+        return todo.toResponse()
+
+    }
+
+    override fun getTodo(todoCardId: Long, todoId: Long): TodoResponse {
+        val todoCard =
+            todoCardRepository.findByIdOrNull(todoCardId) ?: throw ModelNotFoundException("TodoCard", todoCardId)
+        val todo = todoRepository.findByIdOrNull(todoId) ?: throw ModelNotFoundException("TodoCard", todoCardId)
+        return todo.toResponse()
     }
 
     @Transactional
     override fun deleteTodo(todoCardId: Long, todoId: Long) {
         //예외처리 : todoCardId에 해당하는 ID가 없다면
-        val todocard =
+        val todoCard =
             todoCardRepository.findByIdOrNull(todoCardId) ?: throw ModelNotFoundException("TodoCard", todoCardId)
         // 예외처리 : todoId에 해당하는 ID가 없다면
-        val todo = todoRepository.findBytodocardIdAndId(todoCardId, todoId)
+        val todo = todoRepository.findBytodoCardIdAndId(todoCardId, todoId)
             ?: throw ModelNotFoundException("Todo", todoId)
 
         // 삭제
-        todocard.removeTodo(todo)
+        todoCard.removeTodo(todo)
         //영속성 전파
-        todoCardRepository.save(todocard)
+        todoCardRepository.save(todoCard)
     }
+
+
 }
