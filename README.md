@@ -33,7 +33,7 @@ $ cd todoApplication
 </div>
 
 ## API Documents
-<img src ="./img/API Document.png" >
+<img src ="./img/new.png" >
 
 ## ERD
 <img src ="./img/ERD.png" >
