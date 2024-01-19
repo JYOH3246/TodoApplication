@@ -8,7 +8,7 @@ Todo Application
 
 
 ## 프로젝트 소개
-Todo Application의 API를 개발하는 프로젝트입니다.
+Todo Application의 API를 개발하는 프로젝트입니다!
 
 
 ## 시작 가이드
