@@ -42,7 +42,7 @@ class TodoCardController(
 
     // 4. 할일카드 수정하기
     @PutMapping("{todoCardId}")
-    @PreAuthorize("hasRole('ADMIN') or #userPrincipal == principal")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MEMBER')")
     fun modifyTodoCard(
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @PathVariable todoCardId: Long,

@@ -6,7 +6,7 @@ import com.teamsparta.todoapplication.domain.todo.dto.AddTodoRequest
 import com.teamsparta.todoapplication.domain.todo.model.Todo
 import com.teamsparta.todoapplication.domain.todocard.dto.ModifyTodoCardRequest
 import com.teamsparta.todoapplication.domain.todocard.dto.TodoCardResponse
-import com.teamsparta.todoapplication.infra.BaseTimeEntity
+import com.teamsparta.todoapplication.infra.jpaaudit.BaseUserEntity
 import jakarta.persistence.*
 
 @Entity
@@ -17,7 +17,7 @@ class TodoCard(
     @OneToMany(mappedBy = "todoCard", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
     var todos: MutableList<Todo> = mutableListOf()
 
-) : BaseTimeEntity() {
+) : BaseUserEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null

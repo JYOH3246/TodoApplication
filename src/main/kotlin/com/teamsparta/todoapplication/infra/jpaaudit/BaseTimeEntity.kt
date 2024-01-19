@@ -1,4 +1,4 @@
-package com.teamsparta.todoapplication.infra
+package com.teamsparta.todoapplication.infra.jpaaudit
 
 import jakarta.persistence.Column
 import jakarta.persistence.EntityListeners

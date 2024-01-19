@@ -2,7 +2,8 @@ package com.teamsparta.todoapplication.domain.comment.model
 
 import com.teamsparta.todoapplication.domain.comment.dto.CommentResponse
 import com.teamsparta.todoapplication.domain.todo.model.Todo
-import com.teamsparta.todoapplication.infra.BaseTimeEntity
+import com.teamsparta.todoapplication.infra.jpaaudit.BaseTimeEntity
+import com.teamsparta.todoapplication.infra.jpaaudit.BaseUserEntity
 import jakarta.persistence.*
 
 @Entity
@@ -14,7 +15,7 @@ class Comment(
     @JoinColumn(name = "todo_id")
     val todo: Todo
 
-) : BaseTimeEntity() {
+) : BaseUserEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null

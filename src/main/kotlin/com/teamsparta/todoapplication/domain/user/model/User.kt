@@ -1,7 +1,7 @@
 package com.teamsparta.todoapplication.domain.user.model
 
 import com.teamsparta.todoapplication.domain.user.dto.UserResponse
-import com.teamsparta.todoapplication.infra.BaseTimeEntity
+import com.teamsparta.todoapplication.infra.jpaaudit.BaseTimeEntity
 import jakarta.persistence.*
 
 @Entity

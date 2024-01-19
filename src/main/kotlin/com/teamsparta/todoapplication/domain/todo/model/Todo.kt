@@ -8,7 +8,7 @@ import com.teamsparta.todoapplication.domain.todo.dto.ModifyTodoRequest
 import com.teamsparta.todoapplication.domain.todo.dto.TodoResponse
 import com.teamsparta.todoapplication.domain.todo.dto.TodoResponseForAll
 import com.teamsparta.todoapplication.domain.todocard.model.TodoCard
-import com.teamsparta.todoapplication.infra.BaseTimeEntity
+import com.teamsparta.todoapplication.infra.jpaaudit.BaseUserEntity
 import jakarta.persistence.*
 
 @Entity
@@ -26,7 +26,7 @@ class Todo(
     @OneToMany(mappedBy = "todo", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
     var comments: MutableList<Comment> = mutableListOf()
 
-): BaseTimeEntity()  {
+): BaseUserEntity()  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
